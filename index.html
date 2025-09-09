@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio của [Tên Của Bạn]</title>
+    <style>
+        /* --- CÀI ĐẶT FONT VÀ BIẾN MÀU --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --dark-navy: #0a192f;
+            --light-navy: #112240;
+            --lightest-navy: #233554;
+            --slate: #8892b0;
+            --light-slate: #a8b2d1;
+            --lightest-slate: #ccd6f6;
+            --cyan: #64ffda;
+            --font-sans: 'Poppins', sans-serif;
+            
+            /* Kích thước menu đã được thu nhỏ */
+            --menu-size: 340px;
+            --item-size: 75px;
+            --center-button-size: 180px;
+        }
+
+        /* --- CÀI ĐẶT CHUNG --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--dark-navy);
+            color: var(--slate);
+            line-height: 1.6;
+        }
+
+        /* --- BỐ CỤC CHÍNH VỚI CSS GRID --- */
+        .page-layout {
+            display: grid;
+            /* Cột 1 cho menu (rộng 400%), cột 2 cho nội dung (phần còn lại) */
+            grid-template-columns: 40% 1fr; 
+        }
+
+        .menu-panel {
+            position: sticky; /* Giữ panel menu cố định khi cuộn */
+            top: 10px;
+            height: 100vh;
+            display: flex; /* Dùng để căn giữa menu bên trong */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-wrapper {
+            padding: 50px;
+        }
+        
+        section {
+            margin-bottom: 80px;
+            max-width: 900px; /* Giới hạn chiều rộng nội dung cho dễ đọc */
+        }
+
+        h2.section-title {
+            color: var(--cyan);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* --- MENU XOAY VÒNG (Đã chỉnh sửa vị trí) --- */
+        .circular-menu-container {
+            position: relative; /* Vị trí tương đối với .menu-panel */
+            width: var(--menu-size);
+            height: var(--menu-size);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: rotate 40s linear infinite;
+        }
+        
+        .menu-item {
+            position: absolute;
+            width: var(--item-size);
+            height: var(--item-size);
+            background-color: rgba(100, 255, 218, 0.1);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            animation: rotate-reverse 40s linear infinite;
+            backdrop-filter: blur(5px);
+        }
+        
+        .menu-item:hover {
+            background-color: var(--cyan);
+            color: var(--dark-navy);
+            box-shadow: 0 0 25px var(--cyan);
+            transform: scale(1.1);
+        }
+
+        .center-button {
+            width: var(--center-button-size);
+            height: var(--center-button-size);
+            border-radius: 50%;
+            z-index: 1001;
+            overflow: hidden;
+            border: 3px solid var(--cyan);
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.7);
+        }
+
+        .center-button img { width: 100%; height: 100%; object-fit: cover; }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotate-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+        /* --- CÁC PHẦN NỘI DUNG (Không thay đổi nhiều) --- */
+        #home h1 {
+            font-size: 3rem;
+            color: var(--lightest-slate);
+            margin-bottom: 10px;
+        }
+        #home p { font-size: 1.2rem; color: var(--cyan); }
+        .skill-item { margin-bottom: 15px; }
+        .skill-item p { color: var(--light-slate); margin-bottom: 5px; }
+        .progress-bar { width: 100%; height: 10px; background-color: var(--lightest-navy); border-radius: 5px; overflow: hidden; }
+        .progress { height: 100%; background-color: var(--cyan); border-radius: 5px; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .project-card { background-color: var(--light-navy); border: 1px solid var(--lightest-navy); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .project-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); }
+        .project-card img { width: 100%; height: 180px; object-fit: cover; }
+        .project-info { padding: 20px; }
+        .project-info h3 { color: var(--lightest-slate); margin-bottom: 10px; }
+        .project-info p { font-size: 0.9rem; }
+        
+        /* --- Giao diện cho điện thoại (Rất quan trọng) --- */
+        @media (max-width: 1024px) {
+            .page-layout {
+                grid-template-columns: 1fr; /* Chuyển về 1 cột */
+            }
+            .menu-panel {
+                position: relative; /* Không còn sticky */
+                height: auto;
+                padding: 30px 0;
+            }
+            .content-wrapper {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-layout">
+        <aside class="menu-panel">
+            <div class="circular-menu-container">
+                <div class="center-button">
+
+                    <img src="https://scontent-syd2-1.xx.fbcdn.net/v/t39.30808-6/378783457_10210936888733638_1322799975999963241_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=h1OtDBmEvHcQ7kNvwGWChSC&_nc_oc=Adl32u4cABQ1nhu5HPulKQqdWNPLbxpLKQcmjEDKtHfGQ9m23s4L3t6P7i7MkJr8Orc&_nc_zt=23&_nc_ht=scontent-syd2-1.xx&_nc_gid=e8sp5xXwy4GKsy-2q71_OA&oh=00_AfZRRamuIM45BfcXLBfHGkTEaHFdGW7gRQei1A78r2AxQg&oe=68C56419" alt="Ảnh đại diện"> 
+                </div>
+                <div class="menu-circle">
+                    </div>
+            </div>
+        </aside>
+
+        <main class="content-wrapper">
+            <section id="home">
+                <h1>Chào bạn, tôi là Đẹp Trai</h1>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </section>
+		
+	
+		</section>
+		<section id="about">
+		<h2 class="section-title">about</h2>
+		
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est labor.</p>
+		</section>
+
+
+            <section id="skills">
+                <h2 class="section-title">Skills</h2>
+                <div class="skills-list">
+                    <div class="skill-item">
+                        <p>HTML & CSS</p>
+                        <div class="progress-bar"><div class="progress" style="width: 95%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <p>JavaScript</p>
+                        <div class="progress-bar"><div class="progress" style="width: 85%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <p>ReactJS</p>
+                        <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <p>NodeJS</p>
+                        <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <p>UI/UX Design (Figma)</p>
+                        <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects">
+                <h2 class="section-title">Projects</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Project 1">
+                        <div class="project-info">
+                            <h3>Trang Dashboard Phân tích</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est labor.</p>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Project 2">
+                        <div class="project-info">
+                            <h3>Ứng dụng Du lịch Mobile</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est labor.</p>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80" alt="Project 3">
+                        <div class="project-info">
+                            <h3>Website Thương mại Điện tử</h3>
+                            <p>History, Purpose and Usage
+Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It usually begin.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <section id="contact">
+		<h2 class="section-title">Contact</h2>
+	<div class="contact-info">
+		<p>📧 Email: deptrai@example.com</p>
+		<p>📞 Phone: +84 912 345 678</p>
+		<p>🌐 Website: www.deptrai.com</p>
+	</div></section>
+
+
+</main>
+    </div>
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuCircle = document.querySelector('.menu-circle');
+            
+            const menuItemsData = [
+                { name: 'HOME', href: '#home' },
+                { name: 'SKILLS', href: '#skills' },
+                { name: 'PROJECTS', href: '#projects' },
+                { name: 'ABOUT', href: '#about' }, // Bạn có thể tạo section about sau
+                { name: 'CONTACT', href: '#contact' }, // Bạn có thể tạo section contact sau
+                { name: 'RESUME', href: '#' } // Link tới file CV
+            ];
+
+            const itemCount = menuItemsData.length;
+            const angleIncrement = 360 / itemCount; 
+
+            menuItemsData.forEach((itemData, index) => {
+                const angle = index * angleIncrement;
+                
+                const menuItem = document.createElement('a');
+                menuItem.href = itemData.href;
+                menuItem.className = 'menu-item';
+                menuItem.innerText = itemData.name;
+                
+                const x = 50 + 50 * Math.cos(angle * Math.PI / 180);
+                const y = 50 + 50 * Math.sin(angle * Math.PI / 180);
+                
+                menuItem.style.left = `calc(${x}% - var(--item-size) / 2)`;
+                menuItem.style.top = `calc(${y}% - var(--item-size) / 2)`;
+
+                menuCircle.appendChild(menuItem);
+            });
+        });
+    </script>
+
+</body>
+</html>
