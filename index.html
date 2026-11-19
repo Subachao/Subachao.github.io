@@ -1,297 +1,967 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio của [Tên Của Bạn]</title>
-    <style>
-        /* --- CÀI ĐẶT FONT VÀ BIẾN MÀU --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Minh Nhut Nguyen · Architectural Draftsperson, Sydney</title>
+<meta name="description" content="Architectural shop drawings for stone facades, luxury residences and interior finishes in Sydney. Minh Nhut Nguyen, Architectural Draftsperson.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B2733'/><path d='M8 24V8l8 10 8-10v16' fill='none' stroke='%23E8EAE6' stroke-width='2.4'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:     #E8EAE6;
+    --sc-surface:    #DCE0DB;
+    --sc-ink:        #1B2733;
+    --sc-ink-soft:   #46535F;
+    --sc-accent:     #B3322A;
+    --sc-accent-ink: #F7F5F0;
+    --sc-font-display: "Archivo", system-ui, sans-serif;
+    --sc-font-text:    "Archivo", system-ui, sans-serif;
+    --sc-font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+    --sc-shadow-color: 210 25% 20%;
+    --line: color-mix(in oklab, var(--sc-ink) 78%, transparent);
+    --line-soft: color-mix(in oklab, var(--sc-ink) 22%, transparent);
+    --grid: color-mix(in oklab, var(--sc-ink) 7%, transparent);
+    --white: #F7F6F2;
+  }
+  html { background: var(--sc-canvas); }
+  body { background: var(--sc-canvas); color: var(--sc-ink); }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-        :root {
-            --dark-navy: #0a192f;
-            --light-navy: #112240;
-            --lightest-navy: #233554;
-            --slate: #8892b0;
-            --light-slate: #a8b2d1;
-            --lightest-slate: #ccd6f6;
-            --cyan: #64ffda;
-            --font-sans: 'Poppins', sans-serif;
-            
-            /* Kích thước menu đã được thu nhỏ */
-            --menu-size: 340px;
-            --item-size: 75px;
-            --center-button-size: 180px;
-        }
+  /* ---------- shared drawing idiom ---------- */
+  .label {
+    font-family: var(--sc-font-mono); font-size: var(--sc-t-xs);
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--sc-ink-soft);
+  }
+  .paper {
+    background-color: var(--sc-canvas);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .sheet { position: relative; }
+  a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 3px; border-radius: 2px; }
+  .h2 { font-family: var(--sc-font-display); font-weight: 720; font-stretch: 82%; font-size: var(--sc-t-2xl); line-height: 1.02; letter-spacing: -0.022em; text-wrap: balance; }
 
-        /* --- CÀI ĐẶT CHUNG --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-sans);
-            background-color: var(--dark-navy);
-            color: var(--slate);
-            line-height: 1.6;
-        }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.6rem; min-height: 3rem; padding: 0 1.4rem;
+    font: 600 var(--sc-t-base)/1 var(--sc-font-text); text-decoration: none; cursor: pointer;
+    background: var(--sc-ink); color: var(--sc-canvas); border: 1.5px solid var(--sc-ink);
+    transition: background-color 150ms var(--sc-ease-out), color 150ms var(--sc-ease-out), border-color 150ms var(--sc-ease-out), transform 120ms var(--sc-ease-out);
+  }
+  .btn svg { width: 1.1em; height: 1.1em; }
+  .btn--ghost { background: transparent; color: var(--sc-ink); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover { background: var(--sc-accent); border-color: var(--sc-accent); color: var(--sc-accent-ink); }
+    .btn--ghost:hover { background: var(--sc-surface); border-color: var(--sc-ink); color: var(--sc-ink); }
+  }
+  .btn:active { transform: translateY(1px); }
 
-        /* --- BỐ CỤC CHÍNH VỚI CSS GRID --- */
-        .page-layout {
-            display: grid;
-            /* Cột 1 cho menu (rộng 400%), cột 2 cho nội dung (phần còn lại) */
-            grid-template-columns: 40% 1fr; 
-        }
+  /* ---------- folio: the sheet index in the margin ---------- */
+  .folio {
+    position: fixed; z-index: var(--sc-z-chrome);
+    left: 50%; bottom: 1.1rem; transform: translateX(-50%);
+    display: flex; align-items: stretch;
+    background: var(--sc-canvas); color: var(--sc-ink);
+    border: 1.5px solid var(--sc-ink); box-shadow: var(--sc-e2);
+    font-family: var(--sc-font-mono); font-size: 0.72rem; letter-spacing: 0.04em;
+    max-width: calc(100vw - 2rem);
+  }
+  .folio__mark { display: flex; align-items: center; padding: 0 0.9rem; font-family: var(--sc-font-display); font-weight: 750; font-size: 0.95rem; letter-spacing: -0.01em; text-decoration: none; border-right: 1px solid var(--line-soft); }
+  .folio__list { list-style: none; margin: 0; padding: 0; display: flex; }
+  .folio__list a {
+    display: flex; flex-direction: column; justify-content: center; gap: 1px;
+    padding: 0.45rem 0.75rem; min-height: 2.9rem; text-decoration: none; border-right: 1px solid var(--line-soft);
+    transition: background-color 140ms var(--sc-ease-out), color 140ms var(--sc-ease-out);
+  }
+  .folio__list small { font-size: 0.6rem; color: var(--sc-ink-soft); letter-spacing: 0.08em; }
+  .folio__list span { text-transform: uppercase; white-space: nowrap; }
+  .folio__list a[aria-current="true"] { background: var(--sc-ink); color: var(--sc-canvas); }
+  .folio__list a[aria-current="true"] small { color: color-mix(in oklab, var(--sc-canvas) 75%, transparent); }
+  @media (hover: hover) and (pointer: fine) { .folio__list a:not([aria-current="true"]):hover { background: var(--sc-surface); } }
+  .folio__now { display: none; }
+  .lang { display: flex; align-items: center; padding: 0 0.6rem; }
+  .lang button {
+    font: inherit; font-size: 0.7rem; padding: 0.3rem 0.5rem; min-width: 2.3rem; min-height: 2rem;
+    background: transparent; color: var(--sc-ink); border: 1px solid var(--line-soft); cursor: pointer;
+    transition: background-color 140ms var(--sc-ease-out), color 140ms var(--sc-ease-out);
+  }
+  .lang button + button { border-left: 0; }
+  .lang button[aria-pressed="true"] { background: var(--sc-ink); color: var(--sc-canvas); border-color: var(--sc-ink); }
+  @media (hover: hover) and (pointer: fine) { .lang button[aria-pressed="false"]:hover { background: var(--sc-surface); } }
+  .lang button:active { transform: translateY(1px); }
 
-        .menu-panel {
-            position: sticky; /* Giữ panel menu cố định khi cuộn */
-            top: 10px;
-            height: 100vh;
-            display: flex; /* Dùng để căn giữa menu bên trong */
-            justify-content: center;
-            align-items: center;
-        }
+  /* The signature move: the stamp, once earned on A-201, rides the folio. */
+  .folio__stamp {
+    position: absolute; right: -0.7rem; top: -1.9rem; pointer-events: none;
+    font-family: var(--sc-font-mono); font-weight: 500; font-size: 0.66rem; letter-spacing: 0.14em;
+    color: var(--sc-accent); border: 1.5px solid var(--sc-accent); padding: 0.18rem 0.45rem;
+    background: color-mix(in oklab, var(--sc-canvas) 86%, transparent);
+    transform: rotate(-6deg) scale(1.5); opacity: 0;
+    transition: opacity 220ms var(--sc-ease-out), transform 260ms var(--sc-ease-out);
+  }
+  .is-approved .folio__stamp { opacity: 1; transform: rotate(-6deg) scale(1); }
 
-        .content-wrapper {
-            padding: 50px;
-        }
-        
-        section {
-            margin-bottom: 80px;
-            max-width: 900px; /* Giới hạn chiều rộng nội dung cho dễ đọc */
-        }
+  /* ---------- A-000 title page ---------- */
+  .title-page { min-height: 100svh; overflow: hidden; display: flex; align-items: center; }
+  .title-page .sc-wrap { position: relative; z-index: 2; }
+  .title-copy { max-width: min(40rem, 45%); }
+  .title-copy h1 {
+    font-family: var(--sc-font-display); font-weight: 780; font-stretch: 78%;
+    font-size: clamp(3.2rem, 1.6rem + 6.4vw, 7.2rem); line-height: 0.92; letter-spacing: -0.03em;
+    text-wrap: balance; margin: var(--sc-5) 0 var(--sc-5);
+  }
+  .title-copy .sc-lede { color: var(--sc-ink-soft); max-width: 34ch; font-size: var(--sc-t-lg); line-height: 1.45; }
+  .title-copy .btn { margin-top: var(--sc-6); }
+  .title-art { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .title-art > div { position: absolute; left: max(47%, calc(100% - 960px)); right: var(--sc-gutter); top: 50%; translate: 0 -48%; }
+  .title-art svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .title-art text { font-family: "IBM Plex Mono", monospace; }
 
-        h2.section-title {
-            color: var(--cyan);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        /* --- MENU XOAY VÒNG (Đã chỉnh sửa vị trí) --- */
-        .circular-menu-container {
-            position: relative; /* Vị trí tương đối với .menu-panel */
-            width: var(--menu-size);
-            height: var(--menu-size);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  /* ---------- A-101 scope ---------- */
+  .scope { padding-bottom: calc(var(--sc-section) + 4rem); }
+  .scope .sc-wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--sc-8); align-items: start; }
+  .scope__lead h2 { margin: 0 0 var(--sc-5); }
+  .scope__lead { position: sticky; top: 15vh; }
+  .scope__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); }
+  .scope__item { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--sc-6); padding: var(--sc-6) 0; border-bottom: 1px solid var(--line-soft); align-items: center; }
+  .scope__item svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .scope__item h3 { font-family: var(--sc-font-display); font-weight: 680; font-size: var(--sc-t-lg); letter-spacing: -0.01em; margin: 0 0 var(--sc-2); }
+  .scope__item p { margin: 0; color: var(--sc-ink-soft); max-width: 52ch; }
+  .scope__item:nth-child(2), .scope__item:nth-child(4) { margin-left: var(--sc-7); }
 
-        .menu-circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            animation: rotate 40s linear infinite;
-        }
-        
-        .menu-item {
-            position: absolute;
-            width: var(--item-size);
-            height: var(--item-size);
-            background-color: rgba(100, 255, 218, 0.1);
-            border: 1px solid var(--cyan);
-            color: var(--cyan);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-            animation: rotate-reverse 40s linear infinite;
-            backdrop-filter: blur(5px);
-        }
-        
-        .menu-item:hover {
-            background-color: var(--cyan);
-            color: var(--dark-navy);
-            box-shadow: 0 0 25px var(--cyan);
-            transform: scale(1.1);
-        }
+  /* ---------- A-201 the peak: blueprint ---------- */
+  .peak { --sc-canvas: #102236; --sc-ink: #DDE7EF; --sc-ink-soft: #A7B8C8; --sc-accent: #FF7466; color: var(--sc-ink); background: #102236;
+    --line: color-mix(in oklab, #DDE7EF 84%, transparent); --line-soft: color-mix(in oklab, #DDE7EF 30%, transparent); --grid: color-mix(in oklab, #DDE7EF 6%, transparent);
+    --red: #FF7466; }
+  .peak .sc-stage { background-color: #102236; }
+  .peak__in { height: 100%; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--sc-7); align-items: center; padding: 5vh var(--sc-gutter) 10vh; max-width: 92rem; margin-inline: auto; }
+  .peak__art { position: relative; height: 100%; max-height: 80vh; display: flex; align-items: center; justify-content: center; }
+  .peak__art svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .peak__art text { font-family: "IBM Plex Mono", monospace; }
+  .peak h2 { margin: var(--sc-3) 0 var(--sc-5); }
+  .peak .label { color: var(--sc-ink-soft); }
+  .rev { width: 100%; border-collapse: collapse; font-size: var(--sc-t-sm); }
+  .rev th, .rev td { text-align: left; padding: 0.55rem 0.5rem; border-top: 1px solid var(--line-soft); vertical-align: top; }
+  .rev th { font-family: var(--sc-font-mono); font-weight: 400; font-size: var(--sc-t-xs); color: var(--sc-ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+  .rev td:first-child { font-family: var(--sc-font-mono); width: 2.6rem; }
+  .rev tbody tr { --t: clamp(0, (var(--sc-p, 0) - var(--a)) / 0.05, 1); opacity: calc(0.22 + 0.78 * var(--t)); }
+  .rev tr.is-red td { color: var(--red); }
+  .rev tr.is-final td { color: var(--red); font-weight: 600; }
+  .status { margin: var(--sc-5) 0 0; display: flex; gap: var(--sc-3); align-items: baseline; font-family: var(--sc-font-mono); font-size: var(--sc-t-sm); }
+  .status__val { display: grid; }
+  .status__val b { grid-area: 1 / 1; font-weight: 500; letter-spacing: 0.08em; }
+  .status__val b:first-child { --t: clamp(0, (var(--sc-p, 0) - 0.86) / 0.04, 1); opacity: calc(1 - var(--t)); }
+  .status__val b:last-child  { --t: clamp(0, (var(--sc-p, 0) - 0.86) / 0.04, 1); opacity: var(--t); color: var(--red); }
 
-        .center-button {
-            width: var(--center-button-size);
-            height: var(--center-button-size);
-            border-radius: 50%;
-            z-index: 1001;
-            overflow: hidden;
-            border: 3px solid var(--cyan);
-            box-shadow: 0 0 30px rgba(100, 255, 218, 0.7);
-        }
+  /* line drawing driven by act progress */
+  .dw { --t: clamp(0, (var(--sc-p, 0) - var(--a)) / (var(--b) - var(--a)), 1);
+        stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--t)); }
+  .fade { --t: clamp(0, (var(--sc-p, 0) - var(--a)) / (var(--b) - var(--a)), 1); opacity: var(--t); }
+  .gone { --u: clamp(0, (var(--sc-p, 0) - var(--c)) / (var(--d) - var(--c)), 1); opacity: calc(1 - var(--u)); }
+  .stamp {
+    position: absolute; left: 50%; top: 44%; pointer-events: none;
+    --t: clamp(0, (var(--sc-p, 0) - 0.86) / 0.05, 1);
+    opacity: var(--t);
+    transform: translate(-50%, -50%) rotate(-9deg) scale(calc(1.7 - 0.7 * var(--t)));
+    color: var(--red); border: 3px solid var(--red); padding: 0.6rem 1.1rem 0.5rem;
+    font-family: var(--sc-font-mono); font-weight: 500; text-align: center; line-height: 1.25;
+    background: color-mix(in oklab, #102236 72%, transparent);
+  }
+  .stamp b { display: block; font-size: clamp(1.4rem, 1rem + 1.6vw, 2.3rem); letter-spacing: 0.16em; }
+  .stamp span { font-size: 0.72rem; letter-spacing: 0.12em; }
 
-        .center-button img { width: 100%; height: 100%; object-fit: cover; }
+  /* ---------- A-301 project register (pan) ---------- */
+  .register { background: var(--sc-surface); }
+  .register .sc-stage { background: var(--sc-surface); display: flex; align-items: center; }
+  .rail { display: flex; gap: var(--sc-6); padding-inline: var(--sc-gutter); align-items: stretch; width: max-content; }
+  .rail__lead { width: min(26rem, 78vw); align-self: center; padding-right: var(--sc-6); }
+  .rail__lead h2 { margin: var(--sc-3) 0 var(--sc-4); }
+  .rail__lead p { color: var(--sc-ink-soft); margin: 0; }
+  .proj {
+    width: clamp(17rem, 26vw, 23rem); background: var(--sc-canvas); border: 1.5px solid var(--sc-ink);
+    display: grid; grid-template-rows: auto 1fr auto; box-shadow: var(--sc-e1);
+  }
+  .proj__art { aspect-ratio: 4 / 3; border-bottom: 1px solid var(--line-soft); padding: var(--sc-4) var(--sc-4) var(--sc-3); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
+  .proj__art svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .proj__body { padding: var(--sc-5) var(--sc-5) var(--sc-4); }
+  .proj__body h3 { font-family: var(--sc-font-display); font-weight: 700; font-stretch: 86%; font-size: var(--sc-t-lg); line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 var(--sc-3); }
+  .proj__body p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
+  .proj__tb { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-soft); }
+  .proj__tb div { padding: 0.55rem var(--sc-5); font-family: var(--sc-font-mono); font-size: 0.72rem; }
+  .proj__tb div + div { border-left: 1px solid var(--line-soft); }
+  .proj__tb small { display: block; color: var(--sc-ink-soft); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .rail__end { width: min(20rem, 70vw); align-self: center; color: var(--sc-ink-soft); padding-left: var(--sc-4); }
+  @media (prefers-reduced-motion: no-preference) {
+    .proj { --i: 0; --t: clamp(0, (var(--sc-p, 0) * 7 - var(--i)) / 1.2 + 0.9, 1);
+            opacity: calc(0.55 + 0.45 * var(--t)); transform: translateY(calc((1 - var(--t)) * 18px)); }
+  }
 
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes rotate-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  /* ---------- A-401 section through the ground ---------- */
+  .strata .sc-wrap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--sc-8); }
+  .strata__lead h2 { margin: 0 0 var(--sc-5); }
+  .bore { border: 1.5px solid var(--sc-ink); }
+  .layer { display: grid; grid-template-columns: 5.5rem 8.5rem minmax(0, 1fr); border-top: 1px solid var(--line-soft); }
+  .layer:first-child { border-top: 0; }
+  .layer__core { border-right: 1px solid var(--line-soft); }
+  .layer__when { font-family: var(--sc-font-mono); font-size: 0.75rem; padding: var(--sc-5) var(--sc-4); border-right: 1px solid var(--line-soft); color: var(--sc-ink-soft); }
+  .layer__what { padding: var(--sc-5) var(--sc-6); }
+  .layer__what h3 { font-family: var(--sc-font-display); font-weight: 680; font-size: var(--sc-t-lg); letter-spacing: -0.01em; margin: 0 0 0.2rem; line-height: 1.2; }
+  .layer__what .org { font-size: var(--sc-t-sm); color: var(--sc-ink); margin: 0 0 var(--sc-3); font-weight: 500; }
+  .layer__what p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); max-width: 58ch; }
+  .h-diag  { background: repeating-linear-gradient(45deg, var(--line) 0 1px, transparent 1px 9px); }
+  .h-cross { background: repeating-linear-gradient(45deg, var(--line) 0 1px, transparent 1px 9px), repeating-linear-gradient(-45deg, var(--line) 0 1px, transparent 1px 9px); }
+  .h-dots  { background: radial-gradient(circle at 50% 50%, var(--line) 1.2px, transparent 1.6px) 0 0 / 10px 10px; }
+  .h-horiz { background: repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 7px); }
+  .h-gravel{ background: radial-gradient(circle, transparent 2.6px, var(--line) 2.8px 3.4px, transparent 3.6px) 0 0 / 16px 14px, radial-gradient(circle, transparent 1.4px, var(--line) 1.6px 2.2px, transparent 2.4px) 8px 7px / 16px 14px; }
 
-        /* --- CÁC PHẦN NỘI DUNG (Không thay đổi nhiều) --- */
-        #home h1 {
-            font-size: 3rem;
-            color: var(--lightest-slate);
-            margin-bottom: 10px;
-        }
-        #home p { font-size: 1.2rem; color: var(--cyan); }
-        .skill-item { margin-bottom: 15px; }
-        .skill-item p { color: var(--light-slate); margin-bottom: 5px; }
-        .progress-bar { width: 100%; height: 10px; background-color: var(--lightest-navy); border-radius: 5px; overflow: hidden; }
-        .progress { height: 100%; background-color: var(--cyan); border-radius: 5px; }
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .project-card { background-color: var(--light-navy); border: 1px solid var(--lightest-navy); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .project-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); }
-        .project-card img { width: 100%; height: 180px; object-fit: cover; }
-        .project-info { padding: 20px; }
-        .project-info h3 { color: var(--lightest-slate); margin-bottom: 10px; }
-        .project-info p { font-size: 0.9rem; }
-        
-        /* --- Giao diện cho điện thoại (Rất quan trọng) --- */
-        @media (max-width: 1024px) {
-            .page-layout {
-                grid-template-columns: 1fr; /* Chuyển về 1 cột */
-            }
-            .menu-panel {
-                position: relative; /* Không còn sticky */
-                height: auto;
-                padding: 30px 0;
-            }
-            .content-wrapper {
-                padding: 20px;
-            }
-        }
-    </style>
+  .skills-head { margin: var(--sc-9) 0 var(--sc-4); }
+  .skills { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); }
+  .skill { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 22rem); gap: var(--sc-6); align-items: center; padding: var(--sc-4) 0; border-bottom: 1px solid var(--line-soft); }
+  .skill b { display: block; font-weight: 650; }
+  .skill span { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; background: var(--white); border: 1px solid var(--line-soft); height: 1.25rem; }
+  .bar i { display: block; background: transparent; }
+  .bar i.on { background: var(--sc-ink); }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar i.on { transform: scaleX(0); transform-origin: left; transition: transform 380ms var(--sc-ease-out); transition-delay: calc(var(--k) * 70ms + 200ms); }
+    .skills.sc-in .bar i.on { transform: none; }
+  }
+  .langs { margin-top: var(--sc-6); color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
+
+  /* ---------- A-501 colophon ---------- */
+  .colophon { padding-block: var(--sc-10) calc(var(--sc-10) + 3rem); }
+  .colophon .sc-wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sc-8); align-items: end; }
+  .colophon__line { font-family: var(--sc-font-display); font-weight: 720; font-stretch: 80%; font-size: var(--sc-t-3xl); line-height: 0.98; letter-spacing: -0.028em; margin: 0; text-wrap: balance; }
+  .colophon__sub { color: var(--sc-ink-soft); max-width: 40ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); align-items: center; margin-top: var(--sc-6) !important; }
+  .copied { font-family: var(--sc-font-mono); font-size: var(--sc-t-xs); color: var(--sc-accent); letter-spacing: 0.06em; text-transform: uppercase; min-width: 6rem; }
+  .tb { border: 1.5px solid var(--sc-ink); font-family: var(--sc-font-mono); font-size: 0.75rem; }
+  .tb > div { display: grid; grid-template-columns: 7rem 1fr; border-top: 1px solid var(--line-soft); }
+  .tb > div:first-child { border-top: 0; }
+  .tb small, .tb span, .tb a { padding: 0.65rem 0.8rem; }
+  .tb a { overflow-wrap: anywhere; }
+  .tb small { color: var(--sc-ink-soft); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.62rem; border-right: 1px solid var(--line-soft); display: flex; align-items: center; }
+  .tb .ok { color: var(--sc-accent); font-weight: 500; letter-spacing: 0.1em; }
+  .foot { margin-top: var(--sc-8); display: flex; justify-content: space-between; gap: var(--sc-4); flex-wrap: wrap; color: var(--sc-ink-soft); font-size: var(--sc-t-xs); font-family: var(--sc-font-mono); }
+
+  /* ---------- mid widths: shorter folio labels ---------- */
+  @media (max-width: 1180px) and (min-width: 861px) {
+    .folio__list small { display: none; }
+    .folio__list a { padding-inline: 0.6rem; }
+  }
+
+  /* ---------- phones ---------- */
+  @media (max-width: 860px) {
+    .folio { left: 0.75rem; right: 0.75rem; transform: none; max-width: none; bottom: 0.75rem; }
+    .folio__now {
+      display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 0.5rem;
+      font: inherit; text-transform: uppercase; letter-spacing: 0.04em; color: var(--sc-ink);
+      background: transparent; border: 0; border-right: 1px solid var(--line-soft); padding: 0 0.8rem; min-height: 3rem; cursor: pointer; text-align: left;
+    }
+    .folio__now small { display: block; font-size: 0.6rem; color: var(--sc-ink-soft); letter-spacing: 0.08em; }
+    .folio__now svg { width: 0.8rem; height: 0.8rem; transition: transform 160ms var(--sc-ease-out); }
+    .folio.is-open .folio__now svg { transform: rotate(180deg); }
+    .folio__list {
+      display: none; position: absolute; left: -1.5px; right: -1.5px; bottom: calc(100% + 0.5rem);
+      flex-direction: column; background: var(--sc-canvas); border: 1.5px solid var(--sc-ink); box-shadow: var(--sc-e3);
+    }
+    .folio.is-open .folio__list { display: flex; }
+    .folio__list a { flex-direction: row; justify-content: flex-start; align-items: baseline; gap: 0.8rem; border-right: 0; border-top: 1px solid var(--line-soft); min-height: 2.9rem; padding: 0.7rem 0.9rem; }
+    .folio__list li:first-child a { border-top: 0; }
+    .title-page { align-items: flex-start; padding-top: 14vh; }
+    .title-copy { max-width: none; }
+    .title-art > div { left: 6vw; right: -26vw; top: auto; bottom: 8vh; translate: none; }
+    .title-art { opacity: 0.55; }
+    .scope .sc-wrap, .strata .sc-wrap, .colophon .sc-wrap { grid-template-columns: minmax(0, 1fr); gap: var(--sc-6); }
+    .scope__lead { position: static; }
+    .scope__item { grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--sc-4); }
+    .scope__item:nth-child(2), .scope__item:nth-child(4) { margin-left: 0; }
+    .peak__in { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: var(--sc-3); padding: 3vh 1.25rem 5.8rem; align-items: stretch; }
+    .peak__art { max-height: none; min-height: 0; }
+    .peak h2 { font-size: var(--sc-t-xl); margin: var(--sc-1) 0 var(--sc-2); }
+    .peak .label { display: none; }
+    .rev thead { display: none; }
+    .rev td { padding: 0.26rem 0.4rem; font-size: 0.76rem; }
+    .status { margin-top: var(--sc-2); font-size: 0.76rem; }
+    .stamp { top: 40%; }
+    .proj { width: 80vw; }
+    .layer { grid-template-columns: 2.4rem minmax(0, 1fr); }
+    .layer__when { grid-column: 2; border-right: 0; padding: var(--sc-4) var(--sc-4) 0; }
+    .layer__core { grid-row: 1 / span 2; }
+    .layer__what { grid-column: 2; padding: var(--sc-2) var(--sc-4) var(--sc-5); }
+    .skill { grid-template-columns: minmax(0, 1fr); gap: var(--sc-2); }
+    .colophon { padding-block: var(--sc-9) calc(var(--sc-9) + 5rem); }
+    .colophon__line { font-size: var(--sc-t-2xl); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .peak, .peak * { --sc-p: 1 !important; }
+    .folio__stamp { transition: none; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="page-layout">
-        <aside class="menu-panel">
-            <div class="circular-menu-container">
-                <div class="center-button">
+<div class="sc-grain" aria-hidden="true"></div>
 
-                    <img src="https://scontent-syd2-1.xx.fbcdn.net/v/t39.30808-6/378783457_10210936888733638_1322799975999963241_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=h1OtDBmEvHcQ7kNvwGWChSC&_nc_oc=Adl32u4cABQ1nhu5HPulKQqdWNPLbxpLKQcmjEDKtHfGQ9m23s4L3t6P7i7MkJr8Orc&_nc_zt=23&_nc_ht=scontent-syd2-1.xx&_nc_gid=e8sp5xXwy4GKsy-2q71_OA&oh=00_AfZRRamuIM45BfcXLBfHGkTEaHFdGW7gRQei1A78r2AxQg&oe=68C56419" alt="Ảnh đại diện"> 
-                </div>
-                <div class="menu-circle">
-                    </div>
+<!-- shared hatch patterns for every line drawing on the page -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="var(--line-soft)" stroke-width="1"/></pattern>
+    <pattern id="hatch2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V10" stroke="var(--line-soft)" stroke-width="1"/></pattern>
+    <pattern id="xhatch" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 0L10 10M10 0L0 10" stroke="var(--line-soft)" stroke-width="0.8"/></pattern>
+    <pattern id="concrete" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="5" cy="6" r="1.2" fill="var(--line-soft)"/><circle cx="16" cy="17" r="0.9" fill="var(--line-soft)"/><path d="M14 8l3 -4 2 5z" fill="none" stroke="var(--line-soft)" stroke-width="0.8"/><path d="M4 16l4 2 -3 3z" fill="none" stroke="var(--line-soft)" stroke-width="0.8"/></pattern>
+    <pattern id="batt" width="30" height="16" patternUnits="userSpaceOnUse"><path d="M0 0Q15 8 0 16M30 0Q15 8 30 16" fill="none" stroke="var(--line-soft)" stroke-width="1"/></pattern>
+  </defs>
+</svg>
+
+<!-- The folio: a sheet index in the bottom margin. -->
+<nav class="folio" id="folio" aria-label="Sheets">
+  <a class="folio__mark" href="#a000" aria-label="Minh Nhut Nguyen, back to top">MNN</a>
+  <button class="folio__now" type="button" aria-expanded="false" aria-controls="folioList">
+    <span><small id="nowNo">A-000</small><span id="nowTitle">Title</span></span>
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8l4-4 4 4"/></svg>
+  </button>
+  <ol class="folio__list" id="folioList">
+    <li><a href="#a000" data-go="a000"><small>A-000</small><span data-vi="Bìa">Title</span></a></li>
+    <li><a href="#a101" data-go="a101"><small>A-101</small><span data-vi="Phạm vi">Scope</span></a></li>
+    <li><a href="#a201" data-go="a201"><small>A-201</small><span data-vi="Bản vẽ">Drawing</span></a></li>
+    <li><a href="#a301" data-go="a301"><small>A-301</small><span data-vi="Dự án">Projects</span></a></li>
+    <li><a href="#a401" data-go="a401"><small>A-401</small><span data-vi="Quá trình">Background</span></a></li>
+    <li><a href="#a501" data-go="a501"><small>A-501</small><span data-vi="Liên hệ">Contact</span></a></li>
+  </ol>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="vi" aria-pressed="false">VI</button>
+  </div>
+  <span class="folio__stamp" aria-hidden="true" data-vi="ĐÃ DUYỆT">APPROVED</span>
+</nav>
+
+<main>
+
+  <!-- A-000 · TITLE PAGE (flow, layered line drawing) -->
+  <section id="a000" class="title-page paper sheet" data-sc-act="flow" data-sheet="A-000">
+    <div class="title-art" aria-hidden="true">
+      <div>
+        <svg viewBox="100 0 860 660" fill="none">
+          <!-- back plane: setting-out grid, levels, key plan -->
+          <g data-sc-parallax="-1.3" stroke="var(--line-soft)" stroke-width="1">
+            <path d="M320 20V650M520 20V650M720 20V650" stroke-dasharray="14 6 2 6"/>
+            <path d="M110 250H940M110 500H940" stroke-dasharray="14 6 2 6"/>
+            <circle cx="320" cy="20" r="14"/><circle cx="520" cy="20" r="14"/><circle cx="720" cy="20" r="14"/>
+            <g fill="var(--line)" stroke="none" font-size="13" text-anchor="middle"><text x="320" y="25">C</text><text x="520" y="25">D</text><text x="720" y="25">E</text></g>
+            <g fill="var(--line)" stroke="none" font-size="12"><text x="114" y="243">FFL +20.330</text><text x="114" y="493">FFL +17.230</text></g>
+            <!-- key plan -->
+            <g transform="translate(118 44)">
+              <rect x="0" y="0" width="150" height="110" stroke="var(--line-soft)"/>
+              <path d="M20 22H120V44L134 52V90H20Z" stroke="var(--line)" fill="url(#hatch2)"/>
+              <path d="M74 8V102" stroke="var(--sc-accent)" stroke-dasharray="6 3"/>
+              <path d="M74 8l-6 8h12zM74 102l-6 -8h12z" fill="var(--sc-accent)" stroke="none"/>
+              <text x="6" y="-6" fill="var(--line)" stroke="none" font-size="11">KEY PLAN</text>
+            </g>
+          </g>
+          <!-- mid plane: section through slab edge, spandrel and stone cladding -->
+          <g data-sc-parallax="-0.5" stroke="var(--line)" stroke-width="1.5">
+            <rect x="160" y="250" width="280" height="90" fill="url(#concrete)"/>
+            <rect x="160" y="500" width="280" height="90" fill="url(#concrete)"/>
+            <rect x="400" y="340" width="40" height="160" fill="url(#xhatch)"/>
+            <rect x="440" y="340" width="30" height="160" fill="url(#batt)"/>
+            <path d="M440 250H470L500 262" stroke-width="1.2"/>
+            <path d="M440 500H470L500 512" stroke-width="1.2"/>
+            <rect x="508" y="120" width="34" height="250" fill="url(#hatch)"/>
+            <rect x="508" y="376" width="34" height="250" fill="url(#hatch)"/>
+            <path d="M440 300H486V316H470V290M486 316V300H500V330"/>
+            <path d="M440 548H486V564H470V538M486 564V548H500V578"/>
+            <path d="M500 330H508M500 578H508"/>
+            <rect x="472" y="282" width="12" height="40" stroke-width="1" fill="url(#hatch2)"/>
+            <rect x="472" y="530" width="12" height="40" stroke-width="1" fill="url(#hatch2)"/>
+            <path d="M440 306H404M440 554H404" stroke-width="1" stroke-dasharray="5 3"/>
+            <circle cx="456" cy="306" r="3.5" stroke-width="1"/><circle cx="456" cy="554" r="3.5" stroke-width="1"/>
+            <circle cx="525" cy="373" r="3" stroke-width="1"/>
+            <path d="M508 371H542M508 375H542" stroke-width="0.8"/>
+            <!-- window head below -->
+            <path d="M300 590V650M300 604H440M300 616H440M380 604V650M386 604V650" stroke-width="1.1"/>
+            <path d="M200 340V500M206 340V500" stroke-width="0.8" stroke-dasharray="4 4"/>
+          </g>
+          <!-- front plane: dimensions, notes, callout, north point -->
+          <g data-sc-parallax="0.7" stroke="var(--line)" stroke-width="1">
+            <path d="M440 92H542M440 86V98M470 86V98M508 86V98M542 86V98"/>
+            <path d="M590 120V626M584 120H596M584 370H596M584 376H596M584 626H596"/>
+            <path d="M140 250V500M134 250H146M134 340H146M134 500H146"/>
+            <path d="M542 200L640 172H900"/>
+            <path d="M455 420L640 230H900"/>
+            <path d="M525 373L640 400H900"/>
+            <path d="M486 312L640 460H900"/>
+            <path d="M456 554L640 520H900"/>
+            <path d="M470 256L640 290H900"/>
+            <circle cx="525" cy="373" r="26" stroke-dasharray="5 4"/>
+            <path d="M546 388L640 600"/>
+            <circle cx="660" cy="612" r="20"/><path d="M640 612H680"/>
+            <g transform="translate(206 612)"><circle r="16"/><path d="M0 -24L6 6L0 2L-6 6Z" fill="var(--line)"/></g>
+            <path d="M260 642H420" stroke-width="1.4"/><path d="M260 646H420" stroke-width="0.6"/>
+            <g fill="var(--line)" stroke="none" font-size="14">
+              <text x="451" y="80" font-size="12">30</text><text x="482" y="80" font-size="12">38</text><text x="517" y="80" font-size="12">40</text>
+              <text x="600" y="250">2400</text>
+              <text x="146" y="300" font-size="12" transform="rotate(-90 146 300)">900</text>
+              <text x="146" y="440" font-size="12" transform="rotate(-90 146 440)">2200</text>
+              <text x="646" y="164">40 GRANITE CLADDING</text>
+              <text x="646" y="222">50 INSULATION BATT</text>
+              <text x="646" y="282">ALUM. FLASHING</text>
+              <text x="646" y="392">6 JOINT, SEALANT + BACKER ROD</text>
+              <text x="646" y="452">SS BRACKET @ 600 CRS</text>
+              <text x="646" y="512">M12 CHEMICAL ANCHOR</text>
+              <text x="660" y="607" font-size="12" text-anchor="middle">1</text>
+              <text x="660" y="626" font-size="10" text-anchor="middle">A-201</text>
+              <text x="201" y="645" font-size="11">N</text>
+              <text x="262" y="636" font-size="13">SECTION 1  ·  1:5</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="sc-wrap">
+      <div class="title-copy sc-stack" data-sc-in data-sc-stagger="70">
+        <p class="label" data-vi="Họa viên kiến trúc · Sydney">Architectural Draftsperson · Sydney</p>
+        <h1>Minh Nhut Nguyen</h1>
+        <p class="sc-lede" data-vi="Bản vẽ shop drawing cho mặt dựng ốp đá, căn hộ cao cấp và hoàn thiện nội thất, từ ý đồ kiến trúc sư đến bản vẽ hoàn công.">Shop drawings for stone facades, luxury residences and interior finishes, from the architect's intent to as-built.</p>
+        <div><a class="btn" href="mailto:minhnhut2727@gmail.com"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="16" height="12"/><path d="M2 5l8 6 8-6"/></svg><span data-vi="Gửi email">Email me</span></a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A-101 · SCOPE (flow + in) -->
+  <section id="a101" class="scope sc-section paper sheet" data-sheet="A-101">
+    <div class="sc-wrap">
+      <div class="scope__lead sc-stack" data-sc-in>
+        <h2 class="h2" data-vi="Tôi vẽ phần đá mà người ta chạm tay vào, và phần mặt dựng mà cả thành phố nhìn thấy.">I draw the stone people touch, and the facades a city looks at.</h2>
+        <p class="sc-body" data-vi="Hơn hai năm toàn thời gian tại Saba Bros Tiling ở Sydney, biến bản vẽ kiến trúc thành mặt bằng, mặt cắt, mặt đứng và chi tiết thi công có phối hợp.">Over two years full-time at Saba Bros Tiling in Sydney, turning architects' drawings into coordinated plans, sections, elevations and construction details.</p>
+      </div>
+      <ol class="scope__list" data-sc-in data-sc-stagger="80">
+        <li class="scope__item">
+          <svg class="persp" data-persp="facade" viewBox="0 0 160 120" aria-hidden="true"></svg>
+          <div>
+            <h3 data-vi="Mặt dựng và sảnh">Facades and lobbies</h3>
+            <p data-vi="Mặt bằng, mặt cắt, mặt đứng và chi tiết liên kết cho tấm ốp mặt dựng và hoàn thiện tường, sàn sảnh, hành lang, phối hợp với kết cấu do đơn vị khác thiết kế.">Plans, sections, elevations and support/fixing details for external cladding and lobby and corridor finishes, coordinated with the structure designed by others.</p>
+          </div>
+        </li>
+        <li class="scope__item">
+          <svg class="persp" data-persp="island" viewBox="0 0 160 120" aria-hidden="true"></svg>
+          <div>
+            <h3 data-vi="Bếp, lavabo, quầy bar">Kitchens, vanities, bars</h3>
+            <p data-vi="Đảo bếp, mặt bàn, lavabo, lò sưởi và quầy bar với chi tiết cạnh đá, phối hợp với đồ gỗ và hệ thống kỹ thuật.">Kitchen islands, benchtops, vanities, fireplaces and bar counters with edge-profile details, coordinated with joinery and services.</p>
+          </div>
+        </li>
+        <li class="scope__item">
+          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.1" aria-hidden="true"><path d="M20 20H80V100H20Z" fill="url(#hatch2)"/><path d="M80 20L130 40V116L80 100" /><path d="M20 40H80M20 60H80M20 80H80M40 20V100M60 20V100" /><path d="M80 40L130 59M80 60L130 78M80 80L130 97M97 27V106M114 33V111"/><path d="M20 100L70 116H130" stroke="var(--line-soft)"/><circle cx="96" cy="106" r="4"/><path d="M8 20V100M5 20H11M5 100H11" stroke-width="0.8"/></svg>
+          <div>
+            <h3 data-vi="Khu vực ướt">Wet areas</h3>
+            <p data-vi="Bố trí đá và gạch cho tường, sàn, định vị mạch và chi tiết cạnh cho phòng tắm, phối hợp với lớp chống thấm.">Wall and floor stone and tile layouts, joint set-outs and edge details for bathrooms, coordinated with waterproofing.</p>
+          </div>
+        </li>
+        <li class="scope__item">
+          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" aria-hidden="true"><rect x="34" y="14" width="70" height="90"/><rect x="48" y="24" width="70" height="90" fill="var(--sc-canvas)"/><path d="M58 44h50M58 56h50M58 68h32"/><path d="M84 66c6 -8 18 -6 20 2s-6 12 -14 10s-12 -6 -6 -12" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M72 98l8 8 18-20" stroke="var(--sc-accent)" stroke-width="2"/><path d="M118 92h20M118 100h20M118 108h14" stroke="var(--line-soft)"/></svg>
+          <div>
+            <h3 data-vi="Phối hợp và hồ sơ">Coordination and records</h3>
+            <p data-vi="Nộp bản vẽ, phiếu chuyển và RFI qua Oracle Aconex, cập nhật theo góp ý của kiến trúc sư và nhà thầu chính, đề xuất phương án mạch và chia tấm, lập bản vẽ hoàn công, danh sách cắt và khối lượng.">Submissions, transmittals and RFIs through Oracle Aconex, revisions from architects and head contractors, alternative joint and panel layouts, as-builts, cutting lists and quantities.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- A-201 · THE PEAK: architect's drawing → shop drawing → comments → revision → approved -->
+  <section id="a201" class="peak sheet" data-sc-act="pin" data-sc-span="4.6" data-sheet="A-201">
+    <div data-sc-stage class="paper">
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><pattern id="hatchB" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="var(--line-soft)" stroke-width="1"/></pattern></defs></svg>
+      <div class="peak__in">
+        <div class="peak__art">
+          <svg id="sheetArt" fill="none" preserveAspectRatio="xMidYMid meet" aria-labelledby="sheetT">
+            <title id="sheetT">A stone kitchen island drawn as a shop drawing: plan, elevation and edge section, marked up by the architect, revised and approved.</title>
+          </svg>
+          <div class="stamp" aria-hidden="true"><b data-vi="ĐÃ DUYỆT">APPROVED</b><span data-vi="ĐƯỢC PHÉP THI CÔNG">FOR CONSTRUCTION</span></div>
+        </div>
+        <div class="peak__side">
+          <p class="label" data-vi="Một bộ shop drawing, từ đầu đến khi được duyệt">One shop drawing, start to approval</p>
+          <h2 class="h2" data-vi="Từ bản vẽ kiến trúc đến con dấu duyệt.">From the architect's drawing to the approval stamp.</h2>
+          <table class="rev">
+            <thead><tr><th data-vi="Lần">Rev</th><th data-vi="Nội dung">Description</th></tr></thead>
+            <tbody>
+              <tr style="--a:0"><td>A</td><td data-vi="Nhận bản vẽ kiến trúc làm nền.">Architect's drawing received as reference.</td></tr>
+              <tr style="--a:0.15"><td>B</td><td data-vi="Shop drawing mặt bằng, mặt đứng, mặt cắt phát hành để duyệt.">Plan, elevation and section issued for approval.</td></tr>
+              <tr style="--a:0.45" class="is-red"><td>C</td><td data-vi="Kiến trúc sư góp ý: dời mạch nối, thêm vát cạnh.">Architect's comments: move the joint, add an arris.</td></tr>
+              <tr style="--a:0.6"><td>D</td><td data-vi="Vẽ lại theo góp ý, phát hành lại.">Revised to suit comments and reissued.</td></tr>
+              <tr style="--a:0.86" class="is-final"><td>E</td><td data-vi="Đã duyệt. Phát hành để thi công.">Approved. Issued for construction.</td></tr>
+            </tbody>
+          </table>
+          <p class="status"><span class="label" data-vi="Trạng thái">Status</span><span class="status__val"><b data-vi="ĐỂ DUYỆT">FOR APPROVAL</b><b data-vi="ĐỂ THI CÔNG">FOR CONSTRUCTION</b></span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A-301 · PROJECT REGISTER (pan) -->
+  <section id="a301" class="register sheet" data-sc-act="pan" data-sc-span="3.4" data-sheet="A-301">
+    <div data-sc-stage>
+      <div class="rail" data-sc-pan="0.04">
+        <div class="rail__lead">
+          <p class="label" data-vi="Dự án tiêu biểu tại Saba Bros">Key projects at Saba Bros</p>
+          <h2 class="h2" data-vi="Những công trình bản vẽ của tôi đã đến.">Where the drawings went.</h2>
+          <p data-vi="Sáu dự án ở Sydney, từ tháp văn phòng đến căn hộ penthouse.">Six Sydney projects, from commercial towers to penthouses.</p>
+        </div>
+
+        <article class="proj" style="--i:0">
+          <div class="proj__art"><svg class="persp" data-persp="margaret" viewBox="0 0 160 120" aria-hidden="true"></svg></div>
+          <div class="proj__body"><h3>60 Margaret Street, Sydney</h3><p data-vi="Mặt dựng thương mại, chi tiết ốp đá ngoài và sảnh trong.">Commercial facade, external and internal lobby stone cladding details.</p></div>
+          <div class="proj__tb"><div><small data-vi="Khách hàng">Client</small>Lipman</div><div><small data-vi="Thời gian">Period</small><span data-vi="05/2026 đến nay">05/2026 to now</span></div></div>
+        </article>
+
+        <article class="proj" style="--i:1">
+          <div class="proj__art"><svg class="persp" data-persp="queensgate" viewBox="0 0 160 120" aria-hidden="true"></svg></div>
+          <div class="proj__body"><h3>Queens Gate, Potts Point</h3><p data-vi="Quầy bar căn hộ, hoàn thiện tường và sàn khu ướt, đảo bếp.">Residential bar counters, wet area wall and floor finishes, kitchen island benches.</p></div>
+          <div class="proj__tb"><div><small data-vi="Khách hàng">Client</small>Decode Sydney</div><div><small data-vi="Thời gian">Period</small><span data-vi="03/2026 đến nay">03/2026 to now</span></div></div>
+        </article>
+
+        <article class="proj" style="--i:2">
+          <div class="proj__art"><svg class="persp" data-persp="castlereagh" viewBox="0 0 160 120" aria-hidden="true"></svg></div>
+          <div class="proj__body"><h3>101-121 Castlereagh St, Sydney</h3><p data-vi="Đảo bếp penthouse và căn hộ, bếp nấu, lò sưởi, lavabo.">Penthouse and residential kitchen islands, cooktops, fireplaces, vanities.</p></div>
+          <div class="proj__tb"><div><small data-vi="Khách hàng">Client</small>Scentre Construction</div><div><small data-vi="Thời gian">Period</small>11/2024 – 05/2026</div></div>
+        </article>
+
+        <article class="proj" style="--i:3">
+          <div class="proj__art"><svg class="persp" data-persp="newmarket" viewBox="0 0 160 120" aria-hidden="true"></svg></div>
+          <div class="proj__body"><h3>Newmarket, Randwick</h3><p data-vi="Shop drawing đá cho bếp và khu ướt căn hộ.">Residential kitchen and wet area stone shop drawings.</p></div>
+          <div class="proj__tb"><div><small data-vi="Khách hàng">Client</small>Lendlease</div><div><small data-vi="Thời gian">Period</small>11/2024 – 04/2025</div></div>
+        </article>
+
+        <article class="proj" style="--i:4">
+          <div class="proj__art"><svg class="persp" data-persp="pitt" viewBox="0 0 160 120" aria-hidden="true"></svg></div>
+          <div class="proj__body"><h3>270 Pitt Street, Sydney</h3><p data-vi="Mặt dựng thương mại và chi tiết đá ngoài nhà.">Commercial facade and external stone details.</p></div>
+          <div class="proj__tb"><div><small data-vi="Khách hàng">Client</small>Built</div><div><small data-vi="Thời gian">Period</small>12/2024</div></div>
+        </article>
+
+        <article class="proj" style="--i:5">
+          <div class="proj__art"><svg class="persp" data-persp="harbour" viewBox="0 0 160 120" aria-hidden="true"></svg></div>
+          <div class="proj__body"><h3>One Sydney Harbour, Barangaroo</h3><p data-vi="Tổng hợp bản vẽ hoàn công và shop drawing.">As-built drawing compilation and shop drawings.</p></div>
+          <div class="proj__tb"><div><small data-vi="Khách hàng">Client</small>Lendlease</div><div><small data-vi="Thời gian">Period</small>10/2024 – 01/2025</div></div>
+        </article>
+
+        <p class="rail__end" data-vi="Bản vẽ của khách hàng được giữ kín. Các hình ở đây là phối cảnh phác họa, không phải bản vẽ dự án.">Client drawings stay confidential. These are sketch perspectives, not project drawings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- A-401 · SECTION THROUGH THE GROUND (flow + reveal) -->
+  <section id="a401" class="strata sc-section paper sheet" data-sc-act="flow" data-sheet="A-401">
+    <div class="sc-wrap">
+      <div class="strata__lead sc-stack" data-sc-in>
+        <h2 class="h2" data-vi="Mười năm nền móng bên dưới mỗi bản vẽ.">Ten years of ground under every drawing.</h2>
+        <p class="sc-body" data-vi="Đọc như một lỗ khoan: mới nhất ở trên, nền cũ nhất ở dưới cùng.">Read it like a borehole: newest at the top, the oldest ground at the bottom.</p>
+      </div>
+      <div>
+        <div class="bore">
+          <div class="layer" data-sc-reveal="right" data-sc-reveal-at="0.05 0.2">
+            <div class="layer__core h-cross"></div>
+            <div class="layer__when" data-vi="09/2024 đến nay">09/2024 to now</div>
+            <div class="layer__what">
+              <h3 data-vi="Họa viên kiến trúc">Architectural Draftsperson</h3>
+              <p class="org">Saba Bros Tiling Pty Ltd, Sydney</p>
+              <p data-vi="Shop drawing cho mặt dựng thương mại, căn hộ cao cấp, penthouse và hoàn thiện đá, gạch nội thất. Toàn thời gian.">Shop drawings for commercial facades, luxury apartments, penthouses and interior stone and tile finishes. Full-time.</p>
             </div>
-        </aside>
+          </div>
+          <div class="layer" data-sc-reveal="right" data-sc-reveal-at="0.08 0.23">
+            <div class="layer__core h-horiz"></div>
+            <div class="layer__when">08/2022 – 10/2024</div>
+            <div class="layer__what">
+              <h3 data-vi="Kỹ sư xây dựng">Civil Engineer</h3>
+              <p class="org">BKTECH, Ho Chi Minh City</p>
+              <p data-vi="Bản vẽ kỹ thuật và hoàn công hệ thống thoát nước mưa, nước thải bằng AutoCAD Civil 3D cho khu công nghiệp và khu dân cư.">Technical and as-built drawings for stormwater and wastewater drainage in AutoCAD Civil 3D, for industrial parks and residential areas.</p>
+            </div>
+          </div>
+          <div class="layer" data-sc-reveal="right" data-sc-reveal-at="0.11 0.26">
+            <div class="layer__core h-dots"></div>
+            <div class="layer__when">09/2018 – 06/2020</div>
+            <div class="layer__what">
+              <h3 data-vi="Thạc sĩ Kỹ thuật Xây dựng">Master of Science, Civil Engineering</h3>
+              <p class="org" data-vi="Đại học Quốc gia Thành Công, Đài Nam, Đài Loan">National Cheng Kung University, Tainan, Taiwan</p>
+              <p data-vi="Luận văn về phương pháp phân tích dữ liệu của thí nghiệm Hamburg Wheel Tracking. GPA 3.8/4.3.">Thesis on data analysis methods for the Hamburg Wheel Tracking Test. GPA 3.8/4.3.</p>
+            </div>
+          </div>
+          <div class="layer" data-sc-reveal="right" data-sc-reveal-at="0.14 0.29">
+            <div class="layer__core h-diag"></div>
+            <div class="layer__when">12/2016 – 04/2018</div>
+            <div class="layer__what">
+              <h3 data-vi="Kỹ sư xây dựng">Civil Engineer</h3>
+              <p class="org">BKTECH, Ho Chi Minh City</p>
+              <p data-vi="Bản vẽ cảnh quan và biển báo giao thông, phối cảnh cầu và nút giao bằng SketchUp, san nền và tính khối lượng đào đắp.">Landscaping and signage drawings, SketchUp perspectives of bridges and intersections, site grading and cut and fill volumes.</p>
+            </div>
+          </div>
+          <div class="layer" data-sc-reveal="right" data-sc-reveal-at="0.17 0.32">
+            <div class="layer__core h-gravel"></div>
+            <div class="layer__when">09/2010 – 10/2015</div>
+            <div class="layer__what">
+              <h3 data-vi="Kỹ sư Xây dựng">Bachelor of Engineering, Civil</h3>
+              <p class="org" data-vi="Đại học Bách khoa TP. Hồ Chí Minh">Ho Chi Minh City University of Technology</p>
+              <p data-vi="Luận văn: thiết kế đường miền núi và cầu bê tông cốt thép.">Thesis: mountainous road design and reinforced concrete bridge design.</p>
+            </div>
+          </div>
+        </div>
 
-        <main class="content-wrapper">
-            <section id="home">
-                <h1>Chào bạn, tôi là Đẹp Trai</h1>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-            </section>
-		
-	
-		</section>
-		<section id="about">
-		<h2 class="section-title">about</h2>
-		
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est labor.</p>
-		</section>
+        <p class="label skills-head" data-vi="Phần mềm">Software</p>
+        <ul class="skills" data-sc-in data-sc-stagger="45">
+          <li class="skill"><div><b>AutoCAD</b><span data-vi="Bản vẽ 2D, shop drawing, chi tiết thi công">2D drafting, shop drawings, construction detailing</span></div><div class="bar" data-level="5"></div></li>
+          <li class="skill"><div><b>SketchUp</b><span data-vi="Dựng hình 3D để phối hợp thiết kế">3D models for design coordination</span></div><div class="bar" data-level="4"></div></li>
+          <li class="skill"><div><b>Shapr3D</b><span data-vi="Chi tiết cấu kiện 3D">3D component detailing</span></div><div class="bar" data-level="4"></div></li>
+          <li class="skill"><div><b>Oracle Aconex</b><span data-vi="Quản lý hồ sơ, phiếu chuyển, RFI">Document control, transmittals, RFIs</span></div><div class="bar" data-level="4"></div></li>
+          <li class="skill"><div><b>AutoCAD Civil 3D</b><span data-vi="Thoát nước, san nền, hoàn công">Drainage, grading, as-built documentation</span></div><div class="bar" data-level="4"></div></li>
+          <li class="skill"><div><b>Blender</b><span data-vi="Diễn họa 3D">3D rendering</span></div><div class="bar" data-level="3"></div></li>
+          <li class="skill"><div><b>Photoshop</b><span data-vi="Trình bày hình ảnh">Visual presentation</span></div><div class="bar" data-level="3"></div></li>
+          <li class="skill"><div><b>Foxit PDF, Microsoft Office</b><span data-vi="Ghi chú bản vẽ và hồ sơ nộp">Drawing mark-up and submissions</span></div><div class="bar" data-level="4"></div></li>
+        </ul>
+        <p class="langs" data-vi="Tiếng Anh: thành thạo trong công việc. Tiếng Việt: bản ngữ.">English: professional working proficiency. Vietnamese: native.</p>
+      </div>
+    </div>
+  </section>
 
-
-            <section id="skills">
-                <h2 class="section-title">Skills</h2>
-                <div class="skills-list">
-                    <div class="skill-item">
-                        <p>HTML & CSS</p>
-                        <div class="progress-bar"><div class="progress" style="width: 95%;"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <p>JavaScript</p>
-                        <div class="progress-bar"><div class="progress" style="width: 85%;"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <p>ReactJS</p>
-                        <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <p>NodeJS</p>
-                        <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <p>UI/UX Design (Figma)</p>
-                        <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="projects">
-                <h2 class="section-title">Projects</h2>
-                <div class="project-grid">
-                    <div class="project-card">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Project 1">
-                        <div class="project-info">
-                            <h3>Trang Dashboard Phân tích</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est labor.</p>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Project 2">
-                        <div class="project-info">
-                            <h3>Ứng dụng Du lịch Mobile</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est labor.</p>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80" alt="Project 3">
-                        <div class="project-info">
-                            <h3>Website Thương mại Điện tử</h3>
-                            <p>History, Purpose and Usage
-Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It usually begin.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        <section id="contact">
-		<h2 class="section-title">Contact</h2>
-	<div class="contact-info">
-		<p>📧 Email: deptrai@example.com</p>
-		<p>📞 Phone: +84 912 345 678</p>
-		<p>🌐 Website: www.deptrai.com</p>
-	</div></section>
-
+  <!-- A-501 · COLOPHON (close: resolves and holds) -->
+  <section id="a501" class="colophon paper sheet" data-sc-act="flow" data-sheet="A-501">
+    <div class="sc-wrap">
+      <div class="sc-stack" data-sc-in>
+        <p class="colophon__line" data-vi="Có bộ hồ sơ cần vẽ?">Have a set that needs drawing?</p>
+        <p class="colophon__sub" data-vi="Gửi tôi bản vẽ kiến trúc và phạm vi công việc.">Send me the architect's drawings and the scope of work.</p>
+        <div class="actions">
+          <a class="btn" href="mailto:minhnhut2727@gmail.com"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="16" height="12"/><path d="M2 5l8 6 8-6"/></svg><span data-vi="Gửi email">Email me</span></a>
+          <button class="btn btn--ghost" type="button" id="copyMail"><span data-vi="Sao chép email">Copy email</span></button>
+          <span class="copied" id="copied" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="tb" data-sc-in>
+        <div><small data-vi="Vẽ bởi">Drawn</small><span>Minh Nhut Nguyen</span></div>
+        <div><small data-vi="Chức danh">Role</small><span data-vi="Họa viên kiến trúc (ANZSCO 312111)">Architectural Draftsperson (ANZSCO 312111)</span></div>
+        <div><small data-vi="Nơi làm">Based</small><span>Sydney, NSW</span></div>
+        <div><small>Email</small><a href="mailto:minhnhut2727@gmail.com">minhnhut2727@gmail.com</a></div>
+        <div><small data-vi="Trạng thái">Status</small><span class="ok" data-vi="ĐÃ DUYỆT">APPROVED</span></div>
+      </div>
+    </div>
+    <div class="sc-wrap">
+      <footer class="foot">
+        <span>© 2026 Minh Nhut Nguyen</span>
+        <span data-vi="Mọi hình vẽ trên trang là phác họa minh họa.">All drawings on this page are illustrative sketches.</span>
+      </footer>
+    </div>
+  </section>
 
 </main>
-    </div>
 
+<script src="scrollcraft.js"></script>
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  function mk(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
 
+  // ===== skill bars: five cells, the level filled =====
+  Array.prototype.forEach.call(document.querySelectorAll('.bar'), function (b) {
+    var lv = +b.getAttribute('data-level');
+    b.setAttribute('role', 'img');
+    b.setAttribute('aria-label', lv + ' / 5');
+    for (var i = 0; i < 5; i++) { var c = document.createElement('i'); if (i < lv) { c.className = 'on'; c.style.setProperty('--k', i); } b.appendChild(c); }
+  });
 
+  // ===== small perspective sketches =====
+  // mass(): a block in oblique projection. Front face, receding side face (hatched), roof.
+  function mass(g, x, base, w, h, dx, dy, floors, bays, opt) {
+    opt = opt || {};
+    var top = base - h;
+    mk('path', { d: 'M' + (x + w) + ' ' + top + 'L' + (x + w + dx) + ' ' + (top + dy) + 'V' + (base + dy) + 'L' + (x + w) + ' ' + base + 'Z', fill: 'url(#hatch)' }, g);
+    if (!opt.noRoof) mk('path', { d: 'M' + x + ' ' + top + 'L' + (x + dx) + ' ' + (top + dy) + 'H' + (x + w + dx) + 'L' + (x + w) + ' ' + top + 'Z', fill: 'var(--sc-canvas)' }, g);
+    mk('rect', { x: x, y: top, width: w, height: h, fill: opt.fill || 'var(--sc-canvas)' }, g);
+    var d = '';
+    for (var f = 1; f < floors; f++) {
+      var y = top + h * f / floors;
+      d += 'M' + x + ' ' + y + 'H' + (x + w) + 'M' + (x + w) + ' ' + y + 'L' + (x + w + dx) + ' ' + (y + dy);
+    }
+    for (var b = 1; b < bays; b++) { var bx = x + w * b / bays; d += 'M' + bx + ' ' + top + 'V' + base; }
+    if (d) mk('path', { d: d, 'stroke-width': opt.thin || 0.6, stroke: opt.gridStroke || 'var(--line)' }, g);
+  }
+  var SK = {
+    facade: function (g) {
+      mass(g, 30, 108, 56, 22, 34, -14, 2, 4, { fill: 'url(#hatch2)' });
+      mass(g, 34, 86, 48, 74, 28, -11, 9, 6);
+      mk('path', { d: 'M6 108H154', stroke: 'var(--line-soft)' }, g);
+      mk('path', { d: 'M24 86H92', 'stroke-width': 1.6 }, g);
+    },
+    island: function (g) {
+      mk('path', { d: 'M34 58C34 50 44 46 56 46H110C124 46 134 50 134 58C134 66 124 70 110 70H56C44 70 34 66 34 58Z', fill: 'url(#hatch2)' }, g);
+      mk('path', { d: 'M34 58V63C34 71 44 75 56 75H110C124 75 134 71 134 63V58', fill: 'var(--sc-canvas)' }, g);
+      mk('path', { d: 'M86 46V70M86 70V75', 'stroke-width': 0.8 }, g);
+      mk('path', { d: 'M48 75V102C60 106 70 98 84 102C98 106 110 98 122 102V75', fill: 'var(--sc-canvas)' }, g);
+      mk('path', { d: 'M60 76V104M74 76V100M98 76V102M110 76V100', stroke: 'var(--line-soft)' }, g);
+      mk('path', { d: 'M10 108H154', stroke: 'var(--line-soft)' }, g);
+    },
+    margaret: function (g) {
+      mass(g, 22, 106, 82, 26, 36, -16, 2, 7, { fill: 'url(#hatch2)' });
+      mass(g, 22, 80, 82, 64, 36, -16, 8, 7);
+      mk('path', { d: 'M18 80H108M18 54H108M18 28H108', 'stroke-width': 1.4 }, g);
+      mk('path', { d: 'M30 106V92H46V106M62 106V92H78V106', fill: 'var(--sc-canvas)' }, g);
+      mk('path', { d: 'M4 106H156', stroke: 'var(--line-soft)' }, g);
+    },
+    queensgate: function (g) {
+      mass(g, 6, 108, 26, 52, 12, -6, 5, 2);
+      mass(g, 32, 108, 24, 76, 12, -6, 8, 3, { fill: 'url(#hatch2)' });
+      mass(g, 56, 108, 30, 62, 12, -6, 6, 3);
+      mass(g, 86, 108, 22, 88, 12, -6, 9, 2);
+      mass(g, 108, 108, 30, 70, 12, -6, 7, 3);
+      mk('path', { d: 'M138 38C148 40 150 50 150 60V102', 'stroke-width': 1 }, g);
+      mk('path', { d: 'M2 108H158', stroke: 'var(--line-soft)' }, g);
+    },
+    castlereagh: function (g) {
+      mass(g, 30, 108, 70, 30, 30, -12, 3, 7, { fill: 'url(#hatch2)' });
+      mass(g, 40, 78, 52, 54, 24, -10, 9, 6, { noRoof: true });
+      mk('path', { d: 'M40 24C40 12 56 6 66 6C78 6 92 12 92 24', fill: 'var(--sc-canvas)' }, g);
+      mk('path', { d: 'M92 24C92 16 104 8 116 6M66 6C78 2 100 0 116 6', 'stroke-width': 0.8 }, g);
+      mk('path', { d: 'M116 6V68', 'stroke-width': 0.8 }, g);
+      mk('path', { d: 'M26 78H104', 'stroke-width': 1.5 }, g);
+      mk('path', { d: 'M4 108H156', stroke: 'var(--line-soft)' }, g);
+    },
+    newmarket: function (g) {
+      mass(g, 10, 108, 56, 44, 20, -9, 5, 5);
+      mass(g, 82, 108, 52, 56, 20, -9, 6, 4, { fill: 'url(#hatch2)' });
+      mk('path', { d: 'M10 82H66M10 73H66M82 90H134M82 81H134M82 72H134', 'stroke-width': 1.3 }, g);
+      mk('path', { d: 'M66 108H82', stroke: 'var(--line-soft)' }, g);
+      mk('path', { d: 'M2 108H158', stroke: 'var(--line-soft)' }, g);
+      mk('circle', { cx: 74, cy: 98, r: 6, stroke: 'var(--line-soft)' }, g);
+    },
+    pitt: function (g) {
+      mass(g, 30, 108, 80, 18, 26, -10, 2, 8, { fill: 'url(#hatch2)' });
+      mass(g, 50, 90, 40, 84, 20, -8, 14, 4);
+      mk('path', { d: 'M50 6V90M90 6V90', 'stroke-width': 1.4 }, g);
+      mk('path', { d: 'M2 108H158', stroke: 'var(--line-soft)' }, g);
+    },
+    harbour: function (g) {
+      mass(g, 94, 100, 28, 64, 12, -5, 10, 3);
+      mass(g, 44, 100, 34, 92, 14, -6, 16, 3);
+      mk('path', { d: 'M44 8L50 4H72L78 8', 'stroke-width': 0.8 }, g);
+      mk('path', { d: 'M30 100H140', 'stroke-width': 1.2 }, g);
+      mk('path', { d: 'M4 106c8 -3 16 3 24 0s16 3 24 0 16 3 24 0 16 3 24 0 16 3 24 0 16 3 24 0M10 113c8 -3 16 3 24 0s16 3 24 0 16 3 24 0 16 3 24 0 16 3 24 0', stroke: 'var(--line-soft)' }, g);
+    }
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('svg.persp'), function (s) {
+    var g = mk('g', { fill: 'none', stroke: 'var(--line)', 'stroke-width': 1.1, 'stroke-linejoin': 'round' }, s);
+    var f = SK[s.getAttribute('data-persp')]; if (f) f(g);
+  });
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuCircle = document.querySelector('.menu-circle');
-            
-            const menuItemsData = [
-                { name: 'HOME', href: '#home' },
-                { name: 'SKILLS', href: '#skills' },
-                { name: 'PROJECTS', href: '#projects' },
-                { name: 'ABOUT', href: '#about' }, // Bạn có thể tạo section about sau
-                { name: 'CONTACT', href: '#contact' }, // Bạn có thể tạo section contact sau
-                { name: 'RESUME', href: '#' } // Link tới file CV
-            ];
+  // ===== A-201: the shop drawing sheet, driven by --sc-p =====
+  var art = document.getElementById('sheetArt');
+  var MONO = 'IBM Plex Mono, monospace';
+  function D(tag, attrs, a, b, parent, cls) {
+    var n = mk(tag, attrs, parent);
+    var c = cls || (tag === 'text' || tag === 'circle' && attrs.fill ? 'fade' : 'dw');
+    if (c === 'dw') n.setAttribute('pathLength', '1');
+    n.setAttribute('class', c);
+    n.style.setProperty('--a', a); n.style.setProperty('--b', b);
+    return n;
+  }
+  function T(x, y, s, a, b, parent, extra) {
+    var attrs = { x: x, y: y, fill: 'var(--line)', stroke: 'none', 'font-size': 11, 'font-family': MONO };
+    for (var k in extra) attrs[k] = extra[k];
+    var t = D('text', attrs, a, b, parent, 'fade'); t.textContent = s; return t;
+  }
+  function G(parent, attrs, cls, c, d) {
+    var g = mk('g', attrs || {}, parent);
+    if (cls) { g.setAttribute('class', cls); g.style.setProperty('--c', c); g.style.setProperty('--d', d); }
+    return g;
+  }
+  // revision cloud: arcs bulging outward around a rectangle
+  function cloudPath(x, y, w, h, r) {
+    var nx = Math.max(2, Math.round(w / (2 * r))), ny = Math.max(2, Math.round(h / (2 * r)));
+    var sx = w / nx, sy = h / ny, p = 'M' + x + ' ' + y, i;
+    for (i = 0; i < nx; i++) p += 'a' + sx / 2 + ' ' + sx / 2 + ' 0 0 1 ' + sx + ' 0';
+    for (i = 0; i < ny; i++) p += 'a' + sy / 2 + ' ' + sy / 2 + ' 0 0 1 0 ' + sy;
+    for (i = 0; i < nx; i++) p += 'a' + sx / 2 + ' ' + sx / 2 + ' 0 0 1 ' + (-sx) + ' 0';
+    for (i = 0; i < ny; i++) p += 'a' + sy / 2 + ' ' + sy / 2 + ' 0 0 1 0 ' + (-sy);
+    return p;
+  }
+  function revTri(parent, x, y, a) {
+    D('path', { d: 'M' + x + ' ' + (y - 9) + 'L' + (x + 9) + ' ' + (y + 6) + 'H' + (x - 9) + 'Z', stroke: 'var(--red)', 'stroke-width': 1.3 }, a, a + 0.04, parent);
+    T(x, y + 4, 'C', a + 0.02, a + 0.05, parent, { fill: 'var(--red)', 'text-anchor': 'middle', 'font-size': 9 });
+  }
+  var STADIUM = 'M68 30H332A48 48 0 0 1 332 126H68A48 48 0 0 1 68 30Z';
 
-            const itemCount = menuItemsData.length;
-            const angleIncrement = 360 / itemCount; 
+  function viewPlan(g) {
+    // architect's underlay
+    D('path', { d: STADIUM, stroke: 'var(--line-soft)', 'stroke-dasharray': '6 4', 'stroke-width': 1 }, 0.02, 0.1, g, 'fade');
+    // shop drawing
+    D('path', { d: STADIUM, stroke: 'var(--line)', 'stroke-width': 1.6 }, 0.15, 0.24, g);
+    D('path', { d: 'M72 38H328A40 40 0 0 1 328 118H72A40 40 0 0 1 72 38Z', stroke: 'var(--line-soft)', 'stroke-dasharray': '4 3', 'stroke-width': 1 }, 0.2, 0.28, g);
+    D('rect', { x: 150, y: 54, width: 100, height: 48, stroke: 'var(--line)', 'stroke-width': 1.1 }, 0.24, 0.3, g);
+    [[172, 68], [228, 68], [172, 90], [228, 90]].forEach(function (c, i) { D('circle', { cx: c[0], cy: c[1], r: 7, stroke: 'var(--line)', 'stroke-width': 0.9 }, 0.26 + i * 0.01, 0.3 + i * 0.01, g); });
+    var old = G(g, {}, 'gone', 0.6, 0.66);
+    D('path', { d: 'M200 30V126', stroke: 'var(--line)', 'stroke-width': 1.3 }, 0.27, 0.31, old);
+    D('path', { d: 'M20 146H380M20 140V152M200 140V152M380 140V152', stroke: 'var(--line)', 'stroke-width': 0.9 }, 0.3, 0.36, old);
+    T(110, 141, '2250', 0.33, 0.38, old, { 'text-anchor': 'middle' }); T(290, 141, '2250', 0.33, 0.38, old, { 'text-anchor': 'middle' });
+    // revision
+    D('path', { d: 'M290 30V126', stroke: 'var(--line)', 'stroke-width': 1.3 }, 0.64, 0.72, g);
+    D('path', { d: 'M20 146H380M20 140V152M290 140V152M380 140V152', stroke: 'var(--line)', 'stroke-width': 0.9 }, 0.68, 0.74, g);
+    T(155, 141, '2700', 0.7, 0.75, g, { 'text-anchor': 'middle' }); T(335, 141, '1800', 0.7, 0.75, g, { 'text-anchor': 'middle' });
+    D('path', { d: 'M20 166H380M20 160V172M380 160V172', stroke: 'var(--line)', 'stroke-width': 0.9 }, 0.3, 0.36, g);
+    T(200, 161, '4500', 0.33, 0.38, g, { 'text-anchor': 'middle' });
+    T(108, 82, '1A', 0.3, 0.34, g, { 'text-anchor': 'middle' }); T(330, 82, '2A', 0.3, 0.34, g, { 'text-anchor': 'middle' });
+    T(200, 194, 'PLAN ON ISLAND TOP', 0.18, 0.24, g, { 'text-anchor': 'middle', 'font-size': 12, 'text-decoration': 'underline' });
+    // architect comment
+    var cm = G(g, {}, 'gone', 0.76, 0.82);
+    D('path', { d: cloudPath(140, 40, 128, 76, 8), stroke: 'var(--red)', 'stroke-width': 1.4 }, 0.45, 0.55, cm);
+    T(140, 16, 'JOINT CLASHES WITH COOKTOP. RELOCATE.', 0.5, 0.55, cm, { fill: 'var(--red)', 'font-size': 10.5 });
+    revTri(g, 280, 40, 0.52);
+  }
+  function viewElev(g) {
+    D('rect', { x: 20, y: 10, width: 360, height: 100, stroke: 'var(--line-soft)', 'stroke-dasharray': '6 4', 'stroke-width': 1 }, 0.04, 0.12, g, 'fade');
+    D('rect', { x: 20, y: 10, width: 360, height: 16, stroke: 'var(--line)', 'stroke-width': 1.5, fill: 'url(#hatchB)' }, 0.28, 0.34, g);
+    D('path', { d: 'M48 26V102C62 108 76 98 92 104C108 110 124 98 140 104V26M260 26V104C276 98 292 110 308 104C324 98 338 108 352 102V26', stroke: 'var(--line)', 'stroke-width': 1.2 }, 0.32, 0.4, g);
+    D('path', { d: 'M140 26H260M140 104C170 110 230 98 260 104', stroke: 'var(--line)', 'stroke-width': 1.2 }, 0.34, 0.4, g);
+    D('path', { d: 'M0 110H400', stroke: 'var(--line-soft)', 'stroke-width': 1 }, 0.3, 0.36, g);
+    var old = G(g, {}, 'gone', 0.6, 0.66);
+    D('path', { d: 'M200 10V26', stroke: 'var(--line)', 'stroke-width': 1.3 }, 0.34, 0.38, old);
+    D('path', { d: 'M290 10V26', stroke: 'var(--line)', 'stroke-width': 1.3 }, 0.66, 0.72, g);
+    D('path', { d: 'M392 10V110M386 10H398M386 26H398M386 110H398', stroke: 'var(--line)', 'stroke-width': 0.9 }, 0.36, 0.42, g);
+    T(398, 64, '900', 0.38, 0.42, g, { 'font-size': 10 }); T(398, 22, '50', 0.38, 0.42, g, { 'font-size': 10 });
+    T(200, 134, 'ELEVATION A', 0.3, 0.36, g, { 'text-anchor': 'middle', 'font-size': 12, 'text-decoration': 'underline' });
+  }
+  function viewSection(g) {
+    // stone: 20 top laminated to 30 apron, steel RHS frame by others
+    D('path', { d: 'M20 40H214', stroke: 'var(--line)', 'stroke-width': 1.6 }, 0.34, 0.4, g);
+    D('path', { d: 'M220 46V130H190V70H20', stroke: 'var(--line)', 'stroke-width': 1.6 }, 0.36, 0.42, g);
+    D('path', { d: 'M20 40V70', stroke: 'var(--line)', 'stroke-width': 1 }, 0.36, 0.4, g);
+    D('rect', { x: 21, y: 41, width: 168, height: 28, fill: 'url(#hatchB)', stroke: 'none' }, 0.4, 0.44, g, 'fade');
+    D('rect', { x: 191, y: 71, width: 28, height: 58, fill: 'url(#hatchB)', stroke: 'none' }, 0.4, 0.44, g, 'fade');
+    D('path', { d: 'M190 70L220 40', stroke: 'var(--line-soft)', 'stroke-width': 0.8 }, 0.4, 0.44, g);
+    var old = G(g, {}, 'gone', 0.6, 0.66);
+    D('path', { d: 'M214 40H220V46', stroke: 'var(--line)', 'stroke-width': 1.6 }, 0.36, 0.4, old);
+    D('path', { d: 'M214 40L220 46', stroke: 'var(--line)', 'stroke-width': 1.6 }, 0.66, 0.72, g);
+    D('rect', { x: 80, y: 70, width: 70, height: 50, stroke: 'var(--line)', 'stroke-width': 1.2 }, 0.4, 0.46, g);
+    D('rect', { x: 86, y: 76, width: 58, height: 38, stroke: 'var(--line)', 'stroke-width': 0.8 }, 0.42, 0.46, g);
+    D('path', { d: 'M232 40V70M226 40H238M226 70H238M190 146H220M190 140V152M220 140V152', stroke: 'var(--line)', 'stroke-width': 0.9 }, 0.42, 0.47, g);
+    T(240, 59, '30', 0.44, 0.48, g, { 'font-size': 10 }); T(196, 162, '30', 0.44, 0.48, g, { 'font-size': 10 });
+    T(20, 32, '20+30 HONED STONE', 0.42, 0.46, g, { 'font-size': 10 });
+    T(80, 136, '50x50 RHS BY OTHERS', 0.44, 0.48, g, { 'font-size': 10 });
+    T(205, 34, '2x45° ARRIS', 0.72, 0.76, g, { 'font-size': 10, 'text-anchor': 'end' });
+    T(110, 186, 'TYPICAL EDGE SECTION 1:2', 0.34, 0.4, g, { 'text-anchor': 'middle', 'font-size': 12, 'text-decoration': 'underline' });
+    var cm = G(g, {}, 'gone', 0.76, 0.82);
+    D('path', { d: cloudPath(196, 22, 48, 40, 7), stroke: 'var(--red)', 'stroke-width': 1.4 }, 0.47, 0.56, cm);
+    T(120, 10, 'ADD 2x45° ARRIS', 0.52, 0.57, cm, { fill: 'var(--red)', 'font-size': 10.5 });
+    revTri(g, 252, 20, 0.54);
+  }
+  function buildSheet() {
+    while (art.lastChild && art.lastChild.tagName !== 'title') art.removeChild(art.lastChild);
+    var phone = matchMedia('(max-width: 860px)').matches;
+    var W = phone ? 420 : 720, H = phone ? 640 : 420;
+    art.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    mk('rect', { x: 2, y: 2, width: W - 4, height: H - 4, stroke: 'var(--line-soft)', 'stroke-width': 1 }, art);
+    var root = mk('g', { 'stroke-linejoin': 'round' }, art);
+    viewPlan(mk('g', { transform: phone ? 'translate(10 34)' : 'translate(10 30)' }, root));
+    viewElev(mk('g', { transform: phone ? 'translate(10 260)' : 'translate(10 256)' }, root));
+    viewSection(mk('g', { transform: phone ? 'translate(90 430)' : 'translate(450 74)' }, root));
+  }
+  buildSheet();
+  matchMedia('(max-width: 860px)').addEventListener('change', buildSheet);
 
-            menuItemsData.forEach((itemData, index) => {
-                const angle = index * angleIncrement;
-                
-                const menuItem = document.createElement('a');
-                menuItem.href = itemData.href;
-                menuItem.className = 'menu-item';
-                menuItem.innerText = itemData.name;
-                
-                const x = 50 + 50 * Math.cos(angle * Math.PI / 180);
-                const y = 50 + 50 * Math.sin(angle * Math.PI / 180);
-                
-                menuItem.style.left = `calc(${x}% - var(--item-size) / 2)`;
-                menuItem.style.top = `calc(${y}% - var(--item-size) / 2)`;
+  // ===== engine =====
+  ScrollCraft.mount(document.body);
 
-                menuCircle.appendChild(menuItem);
-            });
-        });
-    </script>
+  // ===== folio: the sheet index =====
+  var lang = 'en';
+  var folio = document.getElementById('folio');
+  var sheets = Array.prototype.slice.call(document.querySelectorAll('[data-sheet]'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.folio__list a'));
+  var nowBtn = folio.querySelector('.folio__now');
+  var current = null;
+  function paintFolio() {
+    links.forEach(function (a) { a.setAttribute('aria-current', String(a.getAttribute('data-go') === current.id)); });
+    var link = links.filter(function (a) { return a.getAttribute('data-go') === current.id; })[0];
+    document.getElementById('nowNo').textContent = current.getAttribute('data-sheet');
+    document.getElementById('nowTitle').textContent = link ? link.querySelector('span').textContent : '';
+  }
+  function whichSheet() {
+    var mid = innerHeight * 0.5, pick = sheets[0];
+    for (var i = 0; i < sheets.length; i++) { if (sheets[i].getBoundingClientRect().top <= mid) pick = sheets[i]; }
+    if (pick !== current) { current = pick; paintFolio(); }
+  }
+  function closeList() { folio.classList.remove('is-open'); nowBtn.setAttribute('aria-expanded', 'false'); }
+  nowBtn.addEventListener('click', function () {
+    var open = !folio.classList.contains('is-open');
+    folio.classList.toggle('is-open', open); nowBtn.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeList(); });
+  document.addEventListener('click', function (e) { if (!folio.contains(e.target)) closeList(); });
+  var smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function go(id) {
+    var el = document.getElementById(id); if (!el) return;
+    var y = el.getBoundingClientRect().top + scrollY;
+    if (id === 'a201') y += 2; // land just inside the pin
+    // Own easing loop: native smooth scroll is unreliable over long, pinned pages.
+    var html = document.documentElement, from = scrollY, t0 = performance.now();
+    var dur = Math.min(1400, 350 + Math.abs(y - from) * 0.09);
+    html.style.scrollBehavior = 'auto';
+    if (!smooth) { scrollTo(0, y); html.style.scrollBehavior = ''; }
+    else requestAnimationFrame(function step(now) {
+      var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      scrollTo(0, from + (y - from) * e);
+      if (k < 1) requestAnimationFrame(step); else html.style.scrollBehavior = '';
+    });
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#a"]'), function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); closeList(); go(a.getAttribute('href').slice(1)); });
+  });
 
+  // ===== the signature move: the stamp is earned once, then rides the folio =====
+  var peak = document.getElementById('a201');
+  function checkApproved() {
+    if (document.documentElement.classList.contains('is-approved')) return;
+    var p = parseFloat(getComputedStyle(peak).getPropertyValue('--sc-p')) || 0;
+    if (p >= 0.9 || peak.getBoundingClientRect().bottom < 0) document.documentElement.classList.add('is-approved');
+  }
+  var ticking = false;
+  addEventListener('scroll', function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { ticking = false; whichSheet(); checkApproved(); });
+  }, { passive: true });
+  whichSheet(); checkApproved();
+
+  // ===== copy email =====
+  var copied = document.getElementById('copied');
+  document.getElementById('copyMail').addEventListener('click', function () {
+    var addr = 'minhnhut2727@gmail.com';
+    var done = function () { copied.textContent = lang === 'vi' ? 'Đã sao chép' : 'Copied'; setTimeout(function () { copied.textContent = ''; }, 2400); };
+    try { navigator.clipboard.writeText(addr).then(done, function () { copied.textContent = addr; }); }
+    catch (e) { copied.textContent = addr; }
+  });
+
+  // ===== EN / VI =====
+  var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-vi]'));
+  nodes.forEach(function (n) { n.setAttribute('data-en', n.innerHTML); });
+  var buttons = document.querySelectorAll('.lang button');
+  function setLang(l) {
+    lang = l === 'vi' ? 'vi' : 'en';
+    document.documentElement.lang = lang;
+    nodes.forEach(function (n) { n.innerHTML = n.getAttribute('data-' + lang); });
+    Array.prototype.forEach.call(buttons, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)); });
+    paintFolio();
+    try { localStorage.setItem('mnn-lang', lang); } catch (e) {}
+  }
+  Array.prototype.forEach.call(buttons, function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
+  var saved = null; try { saved = localStorage.getItem('mnn-lang'); } catch (e) {}
+  if (saved === 'vi') setLang('vi');
+})();
+</script>
 </body>
 </html>
