@@ -187,7 +187,7 @@
     width: clamp(17rem, 26vw, 23rem); background: var(--sc-canvas); border: 1.5px solid var(--sc-ink);
     display: grid; grid-template-rows: auto 1fr auto; box-shadow: var(--sc-e1);
   }
-  .proj__art { aspect-ratio: 4 / 3; border-bottom: 1px solid var(--line-soft); padding: var(--sc-4) var(--sc-4) var(--sc-3); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
+  .proj__art { aspect-ratio: 4 / 3; border-bottom: 1px solid var(--line-soft); padding: var(--sc-3) var(--sc-3) var(--sc-2); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
   .proj__art svg { width: 100%; height: 100%; display: block; overflow: visible; }
   .proj__body { padding: var(--sc-5) var(--sc-5) var(--sc-4); }
   .proj__body h3 { font-family: var(--sc-font-display); font-weight: 700; font-stretch: 86%; font-size: var(--sc-t-lg); line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 var(--sc-3); }
@@ -225,12 +225,20 @@
   .skill { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 22rem); gap: var(--sc-6); align-items: center; padding: var(--sc-4) 0; border-bottom: 1px solid var(--line-soft); }
   .skill b { display: block; font-weight: 650; }
   .skill span { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
-  .bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; background: var(--white); border: 1px solid var(--line-soft); height: 1.25rem; }
-  .bar i { display: block; background: transparent; }
-  .bar i.on { background: var(--sc-ink); }
+  .bar svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .bar text { font-family: var(--sc-font-mono); font-size: 7px; fill: var(--sc-ink-soft); }
+  .bar text.is-lv { fill: var(--sc-ink); font-weight: 600; }
+  .bar rect.on { fill: var(--sc-ink); }
+  .bar rect.on.hz { fill: url(#hatch); }
+  .bar__box { stroke: var(--sc-ink); stroke-width: 1; }
+  .bar__tick { stroke: var(--sc-ink); stroke-width: 0.8; }
+  .bar__mid { stroke: var(--line-soft); stroke-width: 0.6; }
+  .bar__ptr { fill: var(--sc-accent); }
   @media (prefers-reduced-motion: no-preference) {
-    .bar i.on { transform: scaleX(0); transform-origin: left; transition: transform 380ms var(--sc-ease-out); transition-delay: calc(var(--k) * 70ms + 200ms); }
-    .skills.sc-in .bar i.on { transform: none; }
+    .bar rect.on { transform: scaleX(0); transform-box: fill-box; transform-origin: left; transition: transform 380ms var(--sc-ease-out); transition-delay: calc(var(--k) * 90ms + 200ms); }
+    .skills.sc-in .bar rect.on { transform: none; }
+    .bar__ptr { opacity: 0; transition: opacity 300ms var(--sc-ease-out) 700ms; }
+    .skills.sc-in .bar__ptr { opacity: 1; }
   }
   .langs { margin-top: var(--sc-6); color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
 
@@ -444,21 +452,21 @@
       </div>
       <ol class="scope__list" data-sc-in data-sc-stagger="80">
         <li class="scope__item">
-          <svg class="persp" data-persp="facade" viewBox="0 0 160 120" aria-hidden="true"></svg>
+          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M24 108V18H92V108"/><path d="M24 36H92M24 54H92M24 72H92M24 90H92M46 18V36M70 18V36M35 36V54M58 36V54M81 36V54M46 54V72M70 54V72M35 72V90M58 72V90M81 72V90" stroke-width="0.7"/><path d="M44 108V94H72V108M58 94V108" fill="var(--sc-canvas)"/><path d="M36 93H80" stroke-width="2.2"/><path d="M10 108H106" stroke="var(--line-soft)"/><circle cx="81" cy="45" r="7" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M87 41L106 31" stroke="var(--sc-accent)" stroke-width="1.2"/><circle cx="126" cy="38" r="22" fill="var(--sc-canvas)"/><path d="M108 24H119V52H108" fill="url(#hatch2)" stroke-width="0.9"/><path d="M119 32H132V45" stroke-width="1.6"/><path d="M112 36H126" stroke-width="0.9"/><path d="M137 19V57" stroke-width="2.6"/><path d="M132 45H137" stroke-width="0.9"/></svg>
           <div>
             <h3 data-vi="Mặt dựng và sảnh">Facades and lobbies</h3>
             <p data-vi="Mặt bằng, mặt cắt, mặt đứng và chi tiết liên kết cho tấm ốp mặt dựng và hoàn thiện tường, sàn sảnh, hành lang, phối hợp với kết cấu do đơn vị khác thiết kế.">Plans, sections, elevations and support/fixing details for external cladding and lobby and corridor finishes, coordinated with the structure designed by others.</p>
           </div>
         </li>
         <li class="scope__item">
-          <svg class="persp" data-persp="island" viewBox="0 0 160 120" aria-hidden="true"></svg>
+          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M16 52L52 36H140L108 52Z" fill="var(--sc-canvas)"/><path d="M16 52V60H108V52M108 60L140 44V36"/><path d="M24 60V104H100V60M100 104L132 90V48"/><path d="M49 60V104M75 60V104" stroke-width="0.7"/><path d="M44 82h2M70 82h2M95 82h2" stroke-width="1.6"/><path d="M60 52L92 36" stroke-width="0.8" stroke-dasharray="2 2"/><ellipse cx="82" cy="44" rx="7" ry="2.6" stroke-width="0.9"/><ellipse cx="102" cy="44" rx="7" ry="2.6" stroke-width="0.9"/><path d="M8 104H146" stroke="var(--line-soft)"/><circle cx="108" cy="55" r="6" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M112 50L126 26" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M126 8H152V16L146 22H126" fill="url(#hatch2)" stroke-width="1.1"/></svg>
           <div>
             <h3 data-vi="Bếp, lavabo, quầy bar">Kitchens, vanities, bars</h3>
             <p data-vi="Đảo bếp, mặt bàn, lavabo, lò sưởi và quầy bar với chi tiết cạnh đá, phối hợp với đồ gỗ và hệ thống kỹ thuật.">Kitchen islands, benchtops, vanities, fireplaces and bar counters with edge-profile details, coordinated with joinery and services.</p>
           </div>
         </li>
         <li class="scope__item">
-          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.1" aria-hidden="true"><path d="M20 20H80V100H20Z" fill="url(#hatch2)"/><path d="M80 20L130 40V116L80 100" /><path d="M20 40H80M20 60H80M20 80H80M40 20V100M60 20V100" /><path d="M80 40L130 59M80 60L130 78M80 80L130 97M97 27V106M114 33V111"/><path d="M20 100L70 116H130" stroke="var(--line-soft)"/><circle cx="96" cy="106" r="4"/><path d="M8 20V100M5 20H11M5 100H11" stroke-width="0.8"/></svg>
+          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M32 14H118V76H32Z"/><path d="M32 30H118M32 46H118M32 62H118M53 14V76M75 14V76M96 14V76" stroke-width="0.7"/><path d="M32 76L12 108H138L118 76"/><path d="M24 89H127M18 98H132M53 76L46 108M75 76V108M96 76L104 108" stroke-width="0.7"/><path d="M106 14V22H98" stroke-width="1.4"/><path d="M92 22H104" stroke-width="2.4"/><path d="M94 28V40M98 30V46M102 28V38" stroke="var(--sc-accent)" stroke-width="1.1" stroke-dasharray="3 3"/><ellipse cx="75" cy="97" rx="8" ry="2.8" stroke="var(--sc-accent)" stroke-width="1.2" fill="var(--sc-canvas)"/><path d="M40 103L62 99M58 96.5l4.5 2.5-3.5 3.5M112 103L89 99M93 96.5l-4.5 2.5 3.5 3.5" stroke="var(--sc-accent)" stroke-width="1.1"/><path d="M140 14V76M137 14H143M137 76H143" stroke-width="0.8" stroke="var(--line-soft)"/></svg>
           <div>
             <h3 data-vi="Khu vực ướt">Wet areas</h3>
             <p data-vi="Bố trí đá và gạch cho tường, sàn, định vị mạch và chi tiết cạnh cho phòng tắm, phối hợp với lớp chống thấm.">Wall and floor stone and tile layouts, joint set-outs and edge details for bathrooms, coordinated with waterproofing.</p>
@@ -669,95 +677,263 @@
     return n;
   }
 
-  // ===== skill bars: five cells, the level filled =====
+  // ===== skill bars: a drawing's graphic scale, checkered up to the level =====
   Array.prototype.forEach.call(document.querySelectorAll('.bar'), function (b) {
-    var lv = +b.getAttribute('data-level');
+    var lv = +b.getAttribute('data-level'), X = 10, S = 44, i;
     b.setAttribute('role', 'img');
     b.setAttribute('aria-label', lv + ' / 5');
-    for (var i = 0; i < 5; i++) { var c = document.createElement('i'); if (i < lv) { c.className = 'on'; c.style.setProperty('--k', i); } b.appendChild(c); }
+    var s = mk('svg', { viewBox: '0 0 240 27', fill: 'none', 'aria-hidden': 'true' }, b);
+    var tk = '';
+    for (i = 0; i <= 5; i++) {
+      var t = mk('text', { x: X + i * S, y: 7, 'text-anchor': 'middle', class: i === lv ? 'is-lv' : '' }, s);
+      t.textContent = i;
+      tk += 'M' + (X + i * S) + ' 9V12';
+    }
+    for (i = 0; i < 5; i++) {
+      if (i >= lv) continue;
+      var r = mk('rect', { x: X + i * S, y: i % 2 ? 16 : 12, width: S, height: 4, class: 'on' }, s);
+      r.style.setProperty('--k', i);
+      var h = mk('rect', { x: X + i * S, y: i % 2 ? 12 : 16, width: S, height: 4, class: 'on hz' }, s);
+      h.style.setProperty('--k', i);
+    }
+    mk('path', { d: tk + 'M' + X + ' 16H' + (X + 5 * S), class: 'bar__mid' }, s);
+    for (i = 1; i < 5; i++) tk += 'M' + (X + i * S) + ' 12V20';
+    mk('path', { d: tk, class: 'bar__tick' }, s);
+    mk('rect', { x: X, y: 12, width: 5 * S, height: 8, class: 'bar__box' }, s);
+    mk('path', { d: 'M' + (X + lv * S) + ' 21l-3.5 5.5h7Z', class: 'bar__ptr' }, s);
   });
 
-  // ===== small perspective sketches =====
-  // mass(): a block in oblique projection. Front face, receding side face (hatched), roof.
-  function mass(g, x, base, w, h, dx, dy, floors, bays, opt) {
-    opt = opt || {};
-    var top = base - h;
-    mk('path', { d: 'M' + (x + w) + ' ' + top + 'L' + (x + w + dx) + ' ' + (top + dy) + 'V' + (base + dy) + 'L' + (x + w) + ' ' + base + 'Z', fill: 'url(#hatch)' }, g);
-    if (!opt.noRoof) mk('path', { d: 'M' + x + ' ' + top + 'L' + (x + dx) + ' ' + (top + dy) + 'H' + (x + w + dx) + 'L' + (x + w) + ' ' + top + 'Z', fill: 'var(--sc-canvas)' }, g);
-    mk('rect', { x: x, y: top, width: w, height: h, fill: opt.fill || 'var(--sc-canvas)' }, g);
-    var d = '';
-    for (var f = 1; f < floors; f++) {
-      var y = top + h * f / floors;
-      d += 'M' + x + ' ' + y + 'H' + (x + w) + 'M' + (x + w) + ' ' + y + 'L' + (x + w + dx) + ' ' + (y + dy);
-    }
-    for (var b = 1; b < bays; b++) { var bx = x + w * b / bays; d += 'M' + bx + ' ' + top + 'V' + base; }
-    if (d) mk('path', { d: d, 'stroke-width': opt.thin || 0.6, stroke: opt.gridStroke || 'var(--line)' }, g);
+  // ===== A-301: two-point perspective pen sketches =====
+  // World units are metres. Plan is (x, z); the camera stands off the near corner (0,0)
+  // at eye height, so verticals stay vertical and floor lines run to two vanishing points.
+  function cam(a, D, eye) {
+    var sa = Math.sin(a), ca = Math.cos(a), C = { k: 1, ext: [1e9, 1e9, -1e9, -1e9], cx: -D * sa, cz: -D * ca };
+    C.P = function (x, y, z) {
+      var vx = x * ca - z * sa, vz = x * sa + z * ca + D;
+      var X = C.k * 100 * vx / vz, Y = -C.k * 100 * (y - eye) / vz, e = C.ext;
+      if (X < e[0]) e[0] = X; if (Y < e[1]) e[1] = Y; if (X > e[2]) e[2] = X; if (Y > e[3]) e[3] = Y;
+      return [X, Y];
+    };
+    return C;
   }
-  var SK = {
-    facade: function (g) {
-      mass(g, 30, 108, 56, 22, 34, -14, 2, 4, { fill: 'url(#hatch2)' });
-      mass(g, 34, 86, 48, 74, 28, -11, 9, 6);
-      mk('path', { d: 'M6 108H154', stroke: 'var(--line-soft)' }, g);
-      mk('path', { d: 'M24 86H92', 'stroke-width': 1.6 }, g);
-    },
-    island: function (g) {
-      mk('path', { d: 'M34 58C34 50 44 46 56 46H110C124 46 134 50 134 58C134 66 124 70 110 70H56C44 70 34 66 34 58Z', fill: 'url(#hatch2)' }, g);
-      mk('path', { d: 'M34 58V63C34 71 44 75 56 75H110C124 75 134 71 134 63V58', fill: 'var(--sc-canvas)' }, g);
-      mk('path', { d: 'M86 46V70M86 70V75', 'stroke-width': 0.8 }, g);
-      mk('path', { d: 'M48 75V102C60 106 70 98 84 102C98 106 110 98 122 102V75', fill: 'var(--sc-canvas)' }, g);
-      mk('path', { d: 'M60 76V104M74 76V100M98 76V102M110 76V100', stroke: 'var(--line-soft)' }, g);
-      mk('path', { d: 'M10 108H154', stroke: 'var(--line-soft)' }, g);
-    },
-    margaret: function (g) {
-      mass(g, 22, 106, 82, 26, 36, -16, 2, 7, { fill: 'url(#hatch2)' });
-      mass(g, 22, 80, 82, 64, 36, -16, 8, 7);
-      mk('path', { d: 'M18 80H108M18 54H108M18 28H108', 'stroke-width': 1.4 }, g);
-      mk('path', { d: 'M30 106V92H46V106M62 106V92H78V106', fill: 'var(--sc-canvas)' }, g);
-      mk('path', { d: 'M4 106H156', stroke: 'var(--line-soft)' }, g);
-    },
-    queensgate: function (g) {
-      mass(g, 6, 108, 26, 52, 12, -6, 5, 2);
-      mass(g, 32, 108, 24, 76, 12, -6, 8, 3, { fill: 'url(#hatch2)' });
-      mass(g, 56, 108, 30, 62, 12, -6, 6, 3);
-      mass(g, 86, 108, 22, 88, 12, -6, 9, 2);
-      mass(g, 108, 108, 30, 70, 12, -6, 7, 3);
-      mk('path', { d: 'M138 38C148 40 150 50 150 60V102', 'stroke-width': 1 }, g);
-      mk('path', { d: 'M2 108H158', stroke: 'var(--line-soft)' }, g);
-    },
-    castlereagh: function (g) {
-      mass(g, 30, 108, 70, 30, 30, -12, 3, 7, { fill: 'url(#hatch2)' });
-      mass(g, 40, 78, 52, 54, 24, -10, 9, 6, { noRoof: true });
-      mk('path', { d: 'M40 24C40 12 56 6 66 6C78 6 92 12 92 24', fill: 'var(--sc-canvas)' }, g);
-      mk('path', { d: 'M92 24C92 16 104 8 116 6M66 6C78 2 100 0 116 6', 'stroke-width': 0.8 }, g);
-      mk('path', { d: 'M116 6V68', 'stroke-width': 0.8 }, g);
-      mk('path', { d: 'M26 78H104', 'stroke-width': 1.5 }, g);
-      mk('path', { d: 'M4 108H156', stroke: 'var(--line-soft)' }, g);
-    },
-    newmarket: function (g) {
-      mass(g, 10, 108, 56, 44, 20, -9, 5, 5);
-      mass(g, 82, 108, 52, 56, 20, -9, 6, 4, { fill: 'url(#hatch2)' });
-      mk('path', { d: 'M10 82H66M10 73H66M82 90H134M82 81H134M82 72H134', 'stroke-width': 1.3 }, g);
-      mk('path', { d: 'M66 108H82', stroke: 'var(--line-soft)' }, g);
-      mk('path', { d: 'M2 108H158', stroke: 'var(--line-soft)' }, g);
-      mk('circle', { cx: 74, cy: 98, r: 6, stroke: 'var(--line-soft)' }, g);
-    },
-    pitt: function (g) {
-      mass(g, 30, 108, 80, 18, 26, -10, 2, 8, { fill: 'url(#hatch2)' });
-      mass(g, 50, 90, 40, 84, 20, -8, 14, 4);
-      mk('path', { d: 'M50 6V90M90 6V90', 'stroke-width': 1.4 }, g);
-      mk('path', { d: 'M2 108H158', stroke: 'var(--line-soft)' }, g);
-    },
-    harbour: function (g) {
-      mass(g, 94, 100, 28, 64, 12, -5, 10, 3);
-      mass(g, 44, 100, 34, 92, 14, -6, 16, 3);
-      mk('path', { d: 'M44 8L50 4H72L78 8', 'stroke-width': 0.8 }, g);
-      mk('path', { d: 'M30 100H140', 'stroke-width': 1.2 }, g);
-      mk('path', { d: 'M4 106c8 -3 16 3 24 0s16 3 24 0 16 3 24 0 16 3 24 0 16 3 24 0 16 3 24 0M10 113c8 -3 16 3 24 0s16 3 24 0 16 3 24 0 16 3 24 0 16 3 24 0', stroke: 'var(--line-soft)' }, g);
+  function pl(pts, close) {
+    return 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('L') + (close ? 'Z' : '');
+  }
+  // plan chains run left-to-right on screen; outward normal of direction (dx,dz) is (dz,-dx)
+  function rnd(pts, r) {
+    if (!r) return pts;
+    var out = [pts[0]];
+    for (var i = 1; i < pts.length - 1; i++) {
+      var p = pts[i], A = pts[i - 1], B = pts[i + 1];
+      var la = Math.hypot(A[0] - p[0], A[1] - p[1]), lb = Math.hypot(B[0] - p[0], B[1] - p[1]);
+      var p1 = [p[0] + (A[0] - p[0]) * r / la, p[1] + (A[1] - p[1]) * r / la];
+      var p2 = [p[0] + (B[0] - p[0]) * r / lb, p[1] + (B[1] - p[1]) * r / lb];
+      for (var t = 0; t <= 10; t++) {
+        var u = t / 10, w0 = (1 - u) * (1 - u), w1 = 2 * u * (1 - u), w2 = u * u;
+        out.push([w0 * p1[0] + w1 * p[0] + w2 * p2[0], w0 * p1[1] + w1 * p[1] + w2 * p2[1]]);
+      }
     }
+    out.push(pts[pts.length - 1]);
+    return out;
+  }
+  function cyl(C, cx, cz, r) {
+    var f = Math.atan2(C.cz - cz, C.cx - cx), out = [];
+    for (var i = 0; i <= 24; i++) { var t = f - Math.PI / 2 + Math.PI * i / 24; out.push([cx + r * Math.cos(t), cz + r * Math.sin(t)]); }
+    return out;
+  }
+  function nrm(ch, i) {
+    var a = ch[Math.max(0, i - 1)], b = ch[Math.min(ch.length - 1, i + 1)];
+    var dx = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(dx, dz) || 1;
+    return [dz / l, -dx / l];
+  }
+  function off(ch, d) {
+    return ch.map(function (q, i) { var n = nrm(ch, i); return [q[0] + n[0] * d, q[1] + n[1] * d]; });
+  }
+  function lens(ch) { var L = [0]; for (var i = 1; i < ch.length; i++) L.push(L[i - 1] + Math.hypot(ch[i][0] - ch[i - 1][0], ch[i][1] - ch[i - 1][1])); return L; }
+  function along(ch, L, s) {
+    for (var i = 1; i < ch.length; i++) if (L[i] >= s) {
+      var u = (s - L[i - 1]) / ((L[i] - L[i - 1]) || 1);
+      return [ch[i - 1][0] + (ch[i][0] - ch[i - 1][0]) * u, ch[i - 1][1] + (ch[i][1] - ch[i - 1][1]) * u];
+    }
+    return ch[ch.length - 1];
+  }
+  function line(g, d, w, extra) { var a = { d: d, 'stroke-width': w }; for (var k in extra) a[k] = extra[k]; return mk('path', a, g); }
+
+  // prism(): extrude a plan chain from y0 to y1 and dress it like a facade.
+  function prism(C, g, ch, y0, y1, o) {
+    o = o || {};
+    var P = C.P, L = lens(ch), tot = L[L.length - 1];
+    var at = function (c, y) { return c.map(function (q) { return P(q[0], y, q[1]); }); };
+    var bot = at(ch, y0), top = at(ch, y1), d, i, s, y;
+    mk('path', { d: pl(bot.concat(top.slice().reverse()), true), fill: 'var(--sc-canvas)', stroke: 'none' }, g);
+    if (o.shade) { // hatch the faces turned away from the light (left)
+      d = '';
+      for (i = 1; i < ch.length; i++) {
+        var sx = ch[i][0] - ch[i - 1][0], sz = ch[i][1] - ch[i - 1][1], sl = Math.hypot(sx, sz) || 1;
+        if (sz / sl < -0.55) d += pl([bot[i - 1], bot[i], top[i], top[i - 1]], true);
+      }
+      if (d) mk('path', { d: d, fill: 'url(#hatch2)', stroke: 'none', opacity: 0.8 }, g);
+    }
+    // floor bands (optionally standing proud of the face, optionally doubled as a slab edge)
+    var lv = o.levels || [];
+    if (o.floors) for (y = y0 + (o.first || o.floors); y < y1 - 0.3; y += o.floors) lv.push(y);
+    var bc = o.bandOut ? off(ch, o.bandOut) : ch;
+    d = '';
+    lv.forEach(function (y) { d += pl(at(bc, y)); if (o.slab) d += pl(at(bc, y + o.slab)); });
+    if (d) line(g, d, 0.6);
+    // mullions / fins
+    function verts(step, from, to, w) {
+      if (!step) return;
+      var dd = '';
+      for (s = step; s < tot - 0.2; s += step) {
+        var q = along(ch, L, s), a = P(q[0], from, q[1]), b = P(q[0], to, q[1]);
+        dd += 'M' + a[0].toFixed(1) + ' ' + a[1].toFixed(1) + 'V' + b[1].toFixed(1);
+      }
+      if (dd) line(g, dd, w);
+    }
+    verts(o.mull, y0 + (o.mullFrom || 0), y1 - (o.mullTo || 0), o.mullW || 0.35);
+    if (o.gmull) verts(o.gmull, y0, y0 + o.mullFrom, 0.55);
+    // punched or arched windows: {w, h, every, rows, rise}
+    if (o.win) {
+      var W = o.win; d = '';
+      for (s = W.every / 2; s < tot - W.w; s += W.every) {
+        var q0 = along(ch, L, s - W.w / 2), q1 = along(ch, L, s + W.w / 2), qm = along(ch, L, s);
+        W.rows.forEach(function (y) {
+          var a = P(q0[0], y, q0[1]), b = P(q0[0], y + W.h, q0[1]), c = P(q1[0], y + W.h, q1[1]), e = P(q1[0], y, q1[1]);
+          if (W.rise) {
+            var m = P(qm[0], y + W.h + 2 * W.rise, qm[1]);
+            d += pl([a, b]) + 'Q' + m[0].toFixed(1) + ' ' + m[1].toFixed(1) + ' ' + c[0].toFixed(1) + ' ' + c[1].toFixed(1) + pl([e]).replace('M', 'L') + 'Z';
+          } else d += pl([a, b, c, e], true);
+        });
+      }
+      line(g, d, 0.5);
+    }
+    // balconies: slab + rail standing out from the face at each level
+    if (o.balc) {
+      var bo = off(ch.slice(1), o.balc); d = '';
+      lv.forEach(function (y) { d += pl(at(bo, y)) + pl(at(bo, y + 0.3)); });
+      line(g, d, 0.7);
+      d = ''; lv.forEach(function (y) { d += pl(at(bo, y + 1.1)); });
+      line(g, d, 0.4);
+    }
+    // outline, with pen overshoot at the vertical edges
+    d = pl(bot) + pl(top);
+    for (i = 0; i < ch.length; i++) {
+      var sharp = i === 0 || i === ch.length - 1;
+      if (!sharp) { var n1 = nrm(ch, i - 1), n2 = nrm(ch, i + 1); sharp = n1[0] * n2[0] + n1[1] * n2[1] < 0.5 && Math.hypot(ch[i][0] - ch[i - 1][0], ch[i][1] - ch[i - 1][1]) > 2; }
+      if (sharp) d += 'M' + bot[i][0].toFixed(1) + ' ' + (bot[i][1] + 1.5).toFixed(1) + 'V' + (top[i][1] - 1.5).toFixed(1);
+    }
+    line(g, d, 1.15);
+    if (o.cap) line(g, pl(at(ch, y1 - o.cap)), 0.7);
+    // canopy on slim columns
+    if (o.canopy) {
+      var K = o.canopy, co = off(ch, K.d), lo = lens(co), b1 = at(co, K.y), b2 = at(co, K.y + K.t);
+      d = '';
+      for (s = 1; s < lo[lo.length - 1]; s += K.col) {
+        var q = along(co.map(function (p, j) { var n = nrm(co, j); return [p[0] - n[0] * 0.5, p[1] - n[1] * 0.5]; }), lo, s);
+        var a = P(q[0], 0, q[1]), b = P(q[0], K.y, q[1]);
+        d += 'M' + a[0].toFixed(1) + ' ' + a[1].toFixed(1) + 'V' + b[1].toFixed(1);
+      }
+      line(g, d, 0.8);
+      mk('path', { d: pl(b1.concat(b2.slice().reverse()), true), fill: 'var(--sc-canvas)', 'stroke-width': 0.9 }, g);
+    }
+  }
+  function tree(C, g, x, z, h) {
+    var P = C.P, b = P(x, 0, z), c = P(x, h, z), r = Math.abs(P(x, h + 2.6, z)[1] - c[1]), d = '';
+    line(g, 'M' + b[0].toFixed(1) + ' ' + b[1].toFixed(1) + 'V' + (c[1] + r * 0.6).toFixed(1), 0.8);
+    for (var i = 0; i < 9; i++) {
+      var t0 = i / 9 * Math.PI * 2, t1 = (i + 1) / 9 * Math.PI * 2;
+      var p0 = [c[0] + r * Math.cos(t0), c[1] + r * 0.85 * Math.sin(t0)], p1 = [c[0] + r * Math.cos(t1), c[1] + r * 0.85 * Math.sin(t1)];
+      d += (i ? '' : 'M' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1)) + 'A' + (r * 0.36).toFixed(1) + ' ' + (r * 0.36).toFixed(1) + ' 0 0 1 ' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1);
+    }
+    mk('path', { d: d + 'Z', fill: 'var(--sc-canvas)', 'stroke-width': 0.7 }, g);
+  }
+  function waves(C, g, z0, n) {
+    var d = '';
+    for (var k = 0; k < n; k++) {
+      var z = z0 - k * 3.5, pts = [];
+      for (var x = -14 - k * 4; x <= 56 + k * 6; x += 0.7) pts.push(C.P(x, 0.25 * Math.sin(x * 1.3 + k), z));
+      d += pl(pts);
+    }
+    line(g, d, 0.45, { opacity: 0.55 });
+  }
+
+  var BLD = {
+    margaret: [0.62, 62, function (C, g) {
+      prism(C, g, [[26, 28], [26, 12], [42, 12]], 26, 58, { floors: 3.2, mull: 1, shade: 1, cap: 1 });
+      prism(C, g, [[8, 30], [8, 10], [24, 10]], 26, 64, { floors: 3.2, slab: 0.5, mull: 2.2, shade: 1, cap: 1 });
+      prism(C, g, rnd([[0, 34], [0, 0], [50, 0]], 12), 0, 26, {
+        levels: [6, 11, 15.5, 20, 24.5], slab: 0.6, bandOut: 0.5, mull: 1.6, mullFrom: 6, gmull: 4,
+        canopy: { y: 5.4, d: 2.4, t: 0.6, col: 6 }
+      });
+    }],
+    queensgate: [0.72, 85, function (C, g) {
+      prism(C, g, [[30, 16], [30, 2], [50, 2]], 0, 24, { floors: 3.4, first: 4, mull: 1, mullFrom: 4, gmull: 3, shade: 1, cap: 0.8, canopy: { y: 3.8, d: 2.5, t: 0.5, col: 5 } });
+      prism(C, g, [[2, 28], [2, 14], [14, 14]], 0, 46, { levels: [44.8], shade: 1, win: { w: 1.3, h: 1.8, every: 2.6, rows: [3.6, 7, 10.4, 13.8, 17.2, 20.6, 24, 27.4, 30.8, 34.2, 37.6, 41] } });
+      prism(C, g, [[5, 25], [5, 17], [11, 17]], 46, 50, { mull: 0.8 });
+      prism(C, g, cyl(C, 22, 6, 7), 0, 31, { floors: 3.4, first: 4, mull: 2.1, cap: 1 });
+      prism(C, g, cyl(C, 22, 6, 7.5), 31, 32.2, {});
+      prism(C, g, [[2, 12], [2, 2], [14, 2]], 30, 36, { win: { w: 1.2, h: 2.2, every: 2.4, rows: [31.8] }, cap: 0.6 });
+      prism(C, g, [[0, 14], [0, 0], [16, 0]], 0, 30, {
+        levels: [3.8, 26], slab: 0.6, bandOut: 0.4, gmull: 4, mullFrom: 3.8, cap: 0.8,
+        win: { w: 1.3, h: 2.4, every: 2.7, rise: 0.6, rows: [5.4, 9.6, 13.8, 18, 22.2] }
+      });
+    }],
+    castlereagh: [0.6, 110, function (C, g) {
+      var P = C.P;
+      prism(C, g, rnd([[10, 18], [10, 9], [30, 9]], 3), 74, 77, { mull: 1.2 });
+      // barrel crown: a curved roof over the top step
+      var tp = [], i;
+      for (i = 0; i <= 16; i++) { var u = i / 16; tp.push(P(10 + 20 * u, 77 + 5 * Math.sin(Math.PI * u), 9)); }
+      var bs = [P(30, 77, 9), P(10, 77, 9)];
+      mk('path', { d: pl(tp.concat(bs), true), fill: 'var(--sc-canvas)', 'stroke-width': 1.1 }, g);
+      var ribs = '';
+      for (i = 1; i < 8; i++) { var uu = i / 8, a = P(10 + 20 * uu, 77, 9), b = P(10 + 20 * uu, 77 + 5 * Math.sin(Math.PI * uu), 9); ribs += pl([a, b]); }
+      line(g, ribs, 0.35);
+      prism(C, g, rnd([[8, 20], [8, 7], [32, 7]], 4), 70, 74, { mull: 0.8, cap: 0.5 });
+      prism(C, g, rnd([[6, 22], [6, 5], [34, 5]], 5), 18, 70, { floors: 3.3, mull: 1.6, shade: 1, cap: 1 });
+      prism(C, g, [[0, 26], [0, 0], [42, 0]], 0, 18, {
+        levels: [6, 15.4], slab: 0.6, bandOut: 0.4, cap: 0.8,
+        win: { w: 1.3, h: 2.6, every: 2.6, rise: 0.5, rows: [7.4, 11.6] }
+      });
+      prism(C, g, [[0, 26], [0, 0], [42, 0]], 0, 5.4, { win: { w: 2.2, h: 3.4, every: 4, rise: 1 , rows: [0.6] } });
+    }],
+    newmarket: [0.55, 80, function (C, g) {
+      prism(C, g, [[36, 20], [36, 6], [62, 6]], 0, 22, { floors: 3.1, first: 3.6, balc: 1.6, mull: 3, shade: 1, cap: 0.8 });
+      prism(C, g, [[0, 16], [0, 0], [30, 0]], 0, 18, { floors: 3.1, first: 3.6, balc: 1.6, mull: 3, shade: 1, cap: 0.8 });
+      line(g, pl([C.P(-12, 0, -2), C.P(64, 0, -2)]), 0.4, { stroke: 'var(--line-soft)' });
+      tree(C, g, 6, -6, 6); tree(C, g, 20, -7, 7); tree(C, g, 33, -5, 6.5); tree(C, g, 50, -3, 7);
+    }],
+    pitt: [0.65, 120, function (C, g) {
+      prism(C, g, [[30, 20], [30, 8], [42, 8]], 14, 48, { floors: 3.3, mull: 1.8, shade: 1, cap: 1 });
+      prism(C, g, [[9, 23], [9, 7], [29, 7]], 96, 100, { mull: 0.8 });
+      prism(C, g, [[8, 24], [8, 6], [30, 6]], 14, 96, { floors: 3.3, mull: 1.2, shade: 1, cap: 1.2 });
+      prism(C, g, [[0, 30], [0, 0], [46, 0]], 0, 14, { levels: [5.5, 10], slab: 0.6, bandOut: 0.4, mull: 2.5, mullFrom: 5.5, gmull: 5, cap: 0.8, canopy: { y: 4.6, d: 2.5, t: 0.5, col: 5 } });
+    }],
+    harbour: [0.6, 110, function (C, g) {
+      prism(C, g, rnd([[29, 21], [29, 7], [41, 7]], 3), 64, 67, { mull: 0.8 });
+      prism(C, g, rnd([[28, 22], [28, 6], [42, 6]], 4), 0, 64, { floors: 3.2, first: 5, mull: 1.5, shade: 1, cap: 1 });
+      prism(C, g, [[14, 24], [14, 3], [32, 3]], 0, 12, { levels: [5], slab: 0.5, bandOut: 0.4, mull: 2, mullFrom: 5, gmull: 4, cap: 0.8 });
+      prism(C, g, rnd([[1, 15], [1, 1], [15, 1]], 4), 86, 90, { mull: 0.8 });
+      prism(C, g, rnd([[0, 16], [0, 0], [16, 0]], 5), 0, 86, { floors: 3.2, first: 5, mull: 1.5, shade: 1, cap: 1 });
+      line(g, pl([C.P(-14, 0, -2.5), C.P(56, 0, -2.5)]), 0.9);
+      waves(C, g, -5, 4);
+    }, 9]
   };
   Array.prototype.forEach.call(document.querySelectorAll('svg.persp'), function (s) {
-    var g = mk('g', { fill: 'none', stroke: 'var(--line)', 'stroke-width': 1.1, 'stroke-linejoin': 'round' }, s);
-    var f = SK[s.getAttribute('data-persp')]; if (f) f(g);
+    var B = BLD[s.getAttribute('data-persp')]; if (!B) return;
+    var C = cam(B[0], B[1], B[3] || 1.6);
+    B[2](C, mk('g', {}));                       // dry run: measure the drawing
+    var e = C.ext, k = Math.min(300 / (e[2] - e[0]), 210 / (e[3] - e[1]));
+    C.k = k; C.ext = [1e9, 1e9, -1e9, -1e9];
+    var g = mk('g', { fill: 'none', stroke: 'var(--line)', 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
+    B[2](C, g);
+    e = C.ext;
+    var gy = C.P(0, 0, 0)[1];
+    if (!B[3]) line(g, 'M' + (e[0] - 14).toFixed(1) + ' ' + gy.toFixed(1) + 'H' + (e[2] + 14).toFixed(1), 1);
+    var bottom = Math.max(e[3], gy) + 4;
+    s.setAttribute('viewBox', (e[0] - 16).toFixed(1) + ' ' + (e[1] - 6).toFixed(1) + ' ' + (e[2] - e[0] + 32).toFixed(1) + ' ' + (bottom - e[1] + 6).toFixed(1));
+    s.setAttribute('preserveAspectRatio', 'xMidYMax meet');
   });
 
   // ===== A-201: the shop drawing sheet, driven by --sc-p =====
@@ -860,12 +1036,64 @@
     T(120, 10, 'ADD 2x45° ARRIS', 0.52, 0.57, cm, { fill: 'var(--red)', 'font-size': 10.5 });
     revTri(g, 252, 20, 0.54);
   }
+  // drawing sheet: trimmed edge, bordered frame with grid zones, corner marks
+  function sheetFrame(W, H, phone) {
+    var f = mk('g', { fill: 'none' }, art), M = 10, i, d = '', nx = phone ? 4 : 8, ny = phone ? 6 : 4;
+    mk('rect', { x: 1, y: 1, width: W - 2, height: H - 2, stroke: 'var(--line-soft)', 'stroke-width': 0.8 }, f);
+    mk('rect', { x: M, y: M, width: W - 2 * M, height: H - 2 * M, stroke: 'var(--line)', 'stroke-width': 1.6 }, f);
+    var lab = function (x, y, s) { var t = mk('text', { x: x, y: y + 2.2, 'text-anchor': 'middle', fill: 'var(--line-soft)', 'font-size': 6.5, 'font-family': MONO }, f); t.textContent = s; };
+    for (i = 0; i <= nx; i++) {
+      var x = M + (W - 2 * M) * i / nx;
+      if (i && i < nx) d += 'M' + x + ' 1V' + M + 'M' + x + ' ' + (H - M) + 'V' + (H - 1);
+      if (i < nx) { var cx = x + (W - 2 * M) / nx / 2; lab(cx, 5.5, i + 1); lab(cx, H - 5.5, i + 1); }
+    }
+    for (i = 0; i <= ny; i++) {
+      var y = M + (H - 2 * M) * i / ny;
+      if (i && i < ny) d += 'M1 ' + y + 'H' + M + 'M' + (W - M) + ' ' + y + 'H' + (W - 1);
+      if (i < ny) { var cy = y + (H - 2 * M) / ny / 2, L = 'ABCDEF'[i]; lab(5.5, cy, L); lab(W - 5.5, cy, L); }
+    }
+    // centring arrows at mid-edges
+    d += 'M' + (W / 2 - 4) + ' ' + M + 'L' + W / 2 + ' ' + (M + 6) + 'L' + (W / 2 + 4) + ' ' + M;
+    d += 'M' + (W / 2 - 4) + ' ' + (H - M) + 'L' + W / 2 + ' ' + (H - M - 6) + 'L' + (W / 2 + 4) + ' ' + (H - M);
+    mk('path', { d: d, stroke: 'var(--line-soft)', 'stroke-width': 0.8 }, f);
+  }
+  // title block: fixed cells, with rev letter, checker and status changing as the drawing moves on
+  function titleBlock(x, y, w, h) {
+    var g = mk('g', { fill: 'none' }, art), r = [0.22, 0.22, 0.24, 0.32], ys = [y], i;
+    for (i = 0; i < 4; i++) ys.push(ys[i] + h * r[i]);
+    mk('rect', { x: x, y: y, width: w, height: h, fill: 'var(--sc-canvas)', stroke: 'var(--line)', 'stroke-width': 1.4 }, g);
+    var d = 'M' + x + ' ' + ys[1] + 'H' + (x + w) + 'M' + x + ' ' + ys[2] + 'H' + (x + w) + 'M' + x + ' ' + ys[3] + 'H' + (x + w);
+    var c3 = [x, x + w / 3, x + 2 * w / 3], c4 = [x, x + w * 0.5, x + w * 0.8];
+    d += 'M' + c3[1] + ' ' + ys[2] + 'V' + ys[3] + 'M' + c3[2] + ' ' + ys[2] + 'V' + ys[3];
+    d += 'M' + c4[1] + ' ' + ys[3] + 'V' + ys[4] + 'M' + c4[2] + ' ' + ys[3] + 'V' + ys[4];
+    mk('path', { d: d, stroke: 'var(--line-soft)', 'stroke-width': 0.9 }, g);
+    var lbl = function (cx, cy, s) { var t = mk('text', { x: cx + 5, y: cy + 8.5, fill: 'var(--line-soft)', 'font-size': 6.5, 'font-family': MONO, 'letter-spacing': '0.08em' }, g); t.textContent = s; };
+    var val = function (cx, cy, s, size, extra) { var a = { x: cx + 5, y: cy, fill: 'var(--line)', 'font-size': size || 9.5, 'font-family': MONO }; for (var k in extra) a[k] = extra[k]; var t = mk('text', a, g); t.textContent = s; return t; };
+    lbl(x, ys[0], 'PROJECT'); val(x, ys[1] - 5, 'STONE KITCHEN ISLAND');
+    lbl(x, ys[1], 'DRAWING'); val(x, ys[2] - 5, 'PLAN · ELEVATION · SECTION');
+    lbl(c3[0], ys[2], 'DRAWN'); val(c3[0], ys[3] - 5, 'MNN');
+    lbl(c3[1], ys[2], 'CHECKED');
+    G(g, {}, 'gone', 0.86, 0.9).appendChild(val(c3[1], ys[3] - 5, '—'));
+    T(c3[1] + 5, ys[3] - 5, 'ARCH ✓', 0.86, 0.9, g, { 'font-size': 9.5, fill: 'var(--red)' });
+    lbl(c3[2], ys[2], 'SCALE'); val(c3[2], ys[3] - 5, '1:20 · 1:2');
+    lbl(c4[0], ys[3], 'STATUS');
+    var st = G(g, {}, 'gone', 0.86, 0.9); st.appendChild(val(c4[0], ys[4] - 7, 'FOR APPROVAL', 9.5));
+    T(c4[0] + 5, ys[4] - 7, 'FOR CONSTRUCTION', 0.86, 0.9, g, { 'font-size': 9.5, fill: 'var(--red)' });
+    lbl(c4[1], ys[3], 'SHEET'); val(c4[1], ys[4] - 7, 'SD-201', 11, { 'font-weight': 600 });
+    lbl(c4[2], ys[3], 'REV');
+    var revs = [['A', 0], ['B', 0.15], ['C', 0.45], ['D', 0.6], ['E', 0.86]];
+    revs.forEach(function (rv, j) {
+      var nx = revs[j + 1], holder = nx ? G(g, {}, 'gone', nx[1], nx[1] + 0.03) : g;
+      T(c4[2] + 5, ys[4] - 6, rv[0], j ? rv[1] : -1, j ? rv[1] + 0.03 : 0, holder, { 'font-size': 18, 'font-weight': 600, fill: j === 2 || j === 4 ? 'var(--red)' : 'var(--line)' });
+    });
+  }
   function buildSheet() {
     while (art.lastChild && art.lastChild.tagName !== 'title') art.removeChild(art.lastChild);
     var phone = matchMedia('(max-width: 860px)').matches;
-    var W = phone ? 420 : 720, H = phone ? 640 : 420;
+    var W = phone ? 420 : 720, H = phone ? 744 : 420;
     art.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    mk('rect', { x: 2, y: 2, width: W - 4, height: H - 4, stroke: 'var(--line-soft)', 'stroke-width': 1 }, art);
+    sheetFrame(W, H, phone);
+    if (phone) titleBlock(10, 636, 400, 98); else titleBlock(456, 290, 254, 120);
     var root = mk('g', { 'stroke-linejoin': 'round' }, art);
     viewPlan(mk('g', { transform: phone ? 'translate(10 34)' : 'translate(10 30)' }, root));
     viewElev(mk('g', { transform: phone ? 'translate(10 260)' : 'translate(10 256)' }, root));
