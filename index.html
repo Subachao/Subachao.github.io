@@ -122,6 +122,8 @@
   .title-art > div { position: absolute; left: max(47%, calc(100% - 960px)); right: var(--sc-gutter); top: 50%; translate: 0 -48%; }
   .title-art svg { width: 100%; height: auto; display: block; overflow: visible; }
   .title-art text { font-family: "IBM Plex Mono", monospace; }
+  .plan3d { transform: perspective(1500px) rotateX(46deg) rotateZ(-24deg) scale(1.16); transform-origin: 50% 55%;
+    -webkit-mask-image: radial-gradient(ellipse 62% 58% at 50% 50%, #000 82%, transparent 100%); mask-image: radial-gradient(ellipse 62% 58% at 50% 50%, #000 82%, transparent 100%); }
 
   /* ---------- A-101 scope ---------- */
   .scope { padding-bottom: calc(var(--sc-section) + 4rem); }
@@ -205,7 +207,24 @@
   /* ---------- A-401 section through the ground ---------- */
   .strata .sc-wrap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--sc-8); }
   .strata__lead h2 { margin: 0 0 var(--sc-5); }
-  .bore { border: 1.5px solid var(--sc-ink); }
+  .bore { border: 3px solid var(--sc-ink); outline: 1px solid var(--sc-ink); outline-offset: 5px; margin: 14px; position: relative; }
+  .bore::before, .bore::after { content: ""; position: absolute; width: 20px; height: 20px; border: 0 solid var(--sc-accent); pointer-events: none; }
+  .bore::before { top: -17px; left: -17px; border-width: 3px 0 0 3px; }
+  .bore::after { bottom: -17px; right: -17px; border-width: 0 3px 3px 0; }
+  .bore__head, .bore__foot { display: grid; grid-template-columns: 5.5rem 8.5rem minmax(0, 1fr); font-family: var(--sc-font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .bore__head { background: var(--sc-ink); color: var(--sc-canvas); }
+  .bore__head span { padding: var(--sc-3) var(--sc-4); border-right: 1px solid color-mix(in srgb, var(--sc-canvas) 30%, transparent); }
+  .bore__head span:last-child { border-right: 0; padding-left: var(--sc-6); }
+  .bore__foot { border-top: 3px double var(--sc-ink); color: var(--sc-ink-soft); }
+  .bore__foot span { padding: var(--sc-3) var(--sc-4); }
+  .bore__foot span:first-child { grid-column: 1 / 3; }
+  .bore__foot span:last-child { text-align: right; padding-right: var(--sc-6); }
+  .layer { transition: background-color .25s; }
+  .layer:hover { background: color-mix(in srgb, var(--sc-accent) 5%, transparent); }
+  .layer.is-now .layer__core { background: repeating-linear-gradient(45deg, var(--sc-accent) 0 1.5px, transparent 1.5px 9px), repeating-linear-gradient(-45deg, var(--sc-accent) 0 1.5px, transparent 1.5px 9px); }
+  .layer.is-now { box-shadow: inset 4px 0 0 var(--sc-accent); }
+  .layer__when .now { display: inline-block; margin-top: var(--sc-2); font-style: normal; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sc-accent); border: 1.5px solid var(--sc-accent); padding: 0.1rem 0.4rem; }
+  .layer__when span { display: block; }
   .layer { display: grid; grid-template-columns: 5.5rem 8.5rem minmax(0, 1fr); border-top: 1px solid var(--line-soft); }
   .layer:first-child { border-top: 0; }
   .layer__core { border-right: 1px solid var(--line-soft); }
@@ -285,7 +304,7 @@
     .title-page { align-items: flex-start; padding-top: 14vh; }
     .title-copy { max-width: none; }
     .title-art > div { left: 6vw; right: -26vw; top: auto; bottom: 8vh; translate: none; }
-    .title-art { opacity: 0.55; }
+    .title-art { opacity: 0.75; }
     .scope .sc-wrap, .strata .sc-wrap, .colophon .sc-wrap { grid-template-columns: minmax(0, 1fr); gap: var(--sc-6); }
     .scope__lead { position: static; }
     .scope__item { grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--sc-4); }
@@ -300,6 +319,11 @@
     .stamp { top: 40%; }
     .proj { width: 80vw; }
     .layer { grid-template-columns: 2.4rem minmax(0, 1fr); }
+    .bore__head { grid-template-columns: 2.4rem minmax(0, 1fr); }
+    .bore__head span:nth-child(2) { display: none; }
+    .bore__head span:first-child { padding: var(--sc-3) 0; text-align: center; font-size: 0.55rem; }
+    .bore__head span:last-child { padding-left: var(--sc-4); }
+    .bore__foot { display: flex; justify-content: space-between; }
     .layer__when { grid-column: 2; border-right: 0; padding: var(--sc-4) var(--sc-4) 0; }
     .layer__core { grid-row: 1 / span 2; }
     .layer__what { grid-column: 2; padding: var(--sc-2) var(--sc-4) var(--sc-5); }
@@ -356,82 +380,129 @@
   <!-- A-000 · TITLE PAGE (flow, layered line drawing) -->
   <section id="a000" class="title-page paper sheet" data-sc-act="flow" data-sheet="A-000">
     <div class="title-art" aria-hidden="true">
-      <div>
-        <svg viewBox="100 0 860 660" fill="none">
-          <!-- back plane: setting-out grid, levels, key plan -->
-          <g data-sc-parallax="-1.3" stroke="var(--line-soft)" stroke-width="1">
-            <path d="M320 20V650M520 20V650M720 20V650" stroke-dasharray="14 6 2 6"/>
-            <path d="M110 250H940M110 500H940" stroke-dasharray="14 6 2 6"/>
-            <circle cx="320" cy="20" r="14"/><circle cx="520" cy="20" r="14"/><circle cx="720" cy="20" r="14"/>
-            <g fill="var(--line)" stroke="none" font-size="13" text-anchor="middle"><text x="320" y="25">C</text><text x="520" y="25">D</text><text x="720" y="25">E</text></g>
-            <g fill="var(--line)" stroke="none" font-size="12"><text x="114" y="243">FFL +20.330</text><text x="114" y="493">FFL +17.230</text></g>
-            <!-- key plan -->
-            <g transform="translate(118 44)">
-              <rect x="0" y="0" width="150" height="110" stroke="var(--line-soft)"/>
-              <path d="M20 22H120V44L134 52V90H20Z" stroke="var(--line)" fill="url(#hatch2)"/>
-              <path d="M74 8V102" stroke="var(--sc-accent)" stroke-dasharray="6 3"/>
-              <path d="M74 8l-6 8h12zM74 102l-6 -8h12z" fill="var(--sc-accent)" stroke="none"/>
-              <text x="6" y="-6" fill="var(--line)" stroke="none" font-size="11">KEY PLAN</text>
-            </g>
+      <div><div class="plan3d">
+        <svg viewBox="-70 -70 930 760" fill="none" stroke-linecap="butt">
+          <defs>
+            <path id="pwE" d="M120 120H460V80H620V300L760 360V540H440V520H120Z"/>
+            <path id="pwI" d="M300 120V520M120 300H300M220 300V400M120 400H300M300 240H410M460 120V200M620 480V540"/>
+          </defs>
+          <!-- back plane: setting-out grid, site boundary, landscape -->
+          <g data-sc-parallax="-0.6" stroke="var(--line)" stroke-width="1.2" stroke-opacity="0.55">
+            <path d="M120 -10V660M300 -10V660M460 -10V660M620 -10V660M760 -10V660" stroke-dasharray="16 5 2 5"/>
+            <path d="M-10 120H850M-10 300H850M-10 400H850M-10 540H850" stroke-dasharray="16 5 2 5"/>
+            <g stroke="var(--line)"><circle cx="120" cy="-26" r="15"/><circle cx="300" cy="-26" r="15"/><circle cx="460" cy="-26" r="15"/><circle cx="620" cy="-26" r="15"/><circle cx="760" cy="-26" r="15"/>
+            <circle cx="-26" cy="120" r="15"/><circle cx="-26" cy="300" r="15"/><circle cx="-26" cy="400" r="15"/><circle cx="-26" cy="540" r="15"/></g>
+            <g fill="var(--line)" stroke="none" font-size="14" text-anchor="middle"><text x="120" y="-21">1</text><text x="300" y="-21">2</text><text x="460" y="-21">3</text><text x="620" y="-21">4</text><text x="760" y="-21">5</text>
+            <text x="-26" y="125">A</text><text x="-26" y="305">B</text><text x="-26" y="405">C</text><text x="-26" y="545">D</text></g>
+            <path d="M40 30L820 10L850 660L30 676Z" stroke-dasharray="22 5 3 5 3 5"/>
+            <g stroke="var(--line)" stroke-width="0.9"><circle cx="812" cy="250" r="20"/><path d="M798 236L826 264M826 236L798 264"/><circle cx="560" cy="626" r="15"/><path d="M549 615L571 637M571 615L549 637"/></g>
+            <path d="M130 610C220 596 320 640 420 624M150 640C260 628 340 664 470 650" stroke-dasharray="3 4"/>
           </g>
-          <!-- mid plane: section through slab edge, spandrel and stone cladding -->
-          <g data-sc-parallax="-0.5" stroke="var(--line)" stroke-width="1.5">
-            <rect x="160" y="250" width="280" height="90" fill="url(#concrete)"/>
-            <rect x="160" y="500" width="280" height="90" fill="url(#concrete)"/>
-            <rect x="400" y="340" width="40" height="160" fill="url(#xhatch)"/>
-            <rect x="440" y="340" width="30" height="160" fill="url(#batt)"/>
-            <path d="M440 250H470L500 262" stroke-width="1.2"/>
-            <path d="M440 500H470L500 512" stroke-width="1.2"/>
-            <rect x="508" y="120" width="34" height="250" fill="url(#hatch)"/>
-            <rect x="508" y="376" width="34" height="250" fill="url(#hatch)"/>
-            <path d="M440 300H486V316H470V290M486 316V300H500V330"/>
-            <path d="M440 548H486V564H470V538M486 564V548H500V578"/>
-            <path d="M500 330H508M500 578H508"/>
-            <rect x="472" y="282" width="12" height="40" stroke-width="1" fill="url(#hatch2)"/>
-            <rect x="472" y="530" width="12" height="40" stroke-width="1" fill="url(#hatch2)"/>
-            <path d="M440 306H404M440 554H404" stroke-width="1" stroke-dasharray="5 3"/>
-            <circle cx="456" cy="306" r="3.5" stroke-width="1"/><circle cx="456" cy="554" r="3.5" stroke-width="1"/>
-            <circle cx="525" cy="373" r="3" stroke-width="1"/>
-            <path d="M508 371H542M508 375H542" stroke-width="0.8"/>
-            <!-- window head below -->
-            <path d="M300 590V650M300 604H440M300 616H440M380 604V650M386 604V650" stroke-width="1.1"/>
-            <path d="M200 340V500M206 340V500" stroke-width="0.8" stroke-dasharray="4 4"/>
-          </g>
-          <!-- front plane: dimensions, notes, callout, north point -->
-          <g data-sc-parallax="0.7" stroke="var(--line)" stroke-width="1">
-            <path d="M440 92H542M440 86V98M470 86V98M508 86V98M542 86V98"/>
-            <path d="M590 120V626M584 120H596M584 370H596M584 376H596M584 626H596"/>
-            <path d="M140 250V500M134 250H146M134 340H146M134 500H146"/>
-            <path d="M542 200L640 172H900"/>
-            <path d="M455 420L640 230H900"/>
-            <path d="M525 373L640 400H900"/>
-            <path d="M486 312L640 460H900"/>
-            <path d="M456 554L640 520H900"/>
-            <path d="M470 256L640 290H900"/>
-            <circle cx="525" cy="373" r="26" stroke-dasharray="5 4"/>
-            <path d="M546 388L640 600"/>
-            <circle cx="660" cy="612" r="20"/><path d="M640 612H680"/>
-            <g transform="translate(206 612)"><circle r="16"/><path d="M0 -24L6 6L0 2L-6 6Z" fill="var(--line)"/></g>
-            <path d="M260 642H420" stroke-width="1.4"/><path d="M260 646H420" stroke-width="0.6"/>
-            <g fill="var(--line)" stroke="none" font-size="14">
-              <text x="451" y="80" font-size="12">30</text><text x="482" y="80" font-size="12">38</text><text x="517" y="80" font-size="12">40</text>
-              <text x="600" y="250">2400</text>
-              <text x="146" y="300" font-size="12" transform="rotate(-90 146 300)">900</text>
-              <text x="146" y="440" font-size="12" transform="rotate(-90 146 440)">2200</text>
-              <text x="646" y="164">40 GRANITE CLADDING</text>
-              <text x="646" y="222">50 INSULATION BATT</text>
-              <text x="646" y="282">ALUM. FLASHING</text>
-              <text x="646" y="392">6 JOINT, SEALANT + BACKER ROD</text>
-              <text x="646" y="452">SS BRACKET @ 600 CRS</text>
-              <text x="646" y="512">M12 CHEMICAL ANCHOR</text>
-              <text x="660" y="607" font-size="12" text-anchor="middle">1</text>
-              <text x="660" y="626" font-size="10" text-anchor="middle">A-201</text>
-              <text x="201" y="645" font-size="11">N</text>
-              <text x="262" y="636" font-size="13">SECTION 1  ·  1:5</text>
+          <!-- mid plane: walls, openings, stair, joinery, furniture -->
+          <g data-sc-parallax="-0.2" stroke="var(--line)" stroke-width="1.8" stroke-linejoin="round">
+            <!-- terrace + pool -->
+            <rect x="120" y="520" width="320" height="76" stroke-width="1"/>
+            <path d="M124 532H436M124 544H436M124 556H436M124 568H436M124 580H436" stroke="var(--line-soft)" stroke-width="0.8"/>
+            <path d="M240 604H330M244 612H326M248 620H322" stroke-width="0.9"/>
+            <rect x="640" y="566" width="150" height="56" rx="3"/><rect x="646" y="572" width="138" height="44" rx="2" stroke-width="0.7"/>
+            <path d="M660 588q8 -5 16 0t16 0t16 0M700 602q8 -5 16 0t16 0t16 0" stroke-width="0.7"/>
+            <!-- walls: ink, then canvas core, then poché -->
+            <use href="#pwE" stroke="var(--line)" stroke-width="12" stroke-linejoin="miter"/>
+            <use href="#pwI" stroke="var(--line)" stroke-width="7"/>
+            <use href="#pwE" stroke="var(--sc-canvas)" stroke-width="8" stroke-linejoin="miter"/>
+            <use href="#pwE" stroke="url(#hatch2)" stroke-width="8" stroke-linejoin="miter"/>
+            <use href="#pwI" stroke="var(--sc-canvas)" stroke-width="3.4"/>
+            <!-- openings cut -->
+            <path d="M150 120H270M480 80H600M120 150V270M120 420V490M120 330V370M620 140V200M760 390V510M648 312L732 348M150 520H280M482 540H538" stroke="var(--sc-canvas)" stroke-width="13"/>
+            <path d="M300 252V290M300 420V456M220 322V356M300 334V372" stroke="var(--sc-canvas)" stroke-width="8"/>
+            <!-- windows -->
+            <g stroke-width="0.8">
+              <path d="M150 115H270M150 120H270M150 125H270M150 115V125M270 115V125"/>
+              <path d="M480 75H600M480 80H600M480 85H600M480 75V85M600 75V85"/>
+              <path d="M115 150V270M120 150V270M125 150V270M115 150H125M115 270H125"/>
+              <path d="M115 420V490M120 420V490M125 420V490M115 420H125M115 490H125"/>
+              <path d="M115 330V370M120 330V370M125 330V370M115 330H125M115 370H125"/>
+              <path d="M615 140V200M620 140V200M625 140V200M615 140H625M615 200H625"/>
+              <path d="M755 390V510M760 390V510M765 390V510M755 390H765M755 510H765"/>
+              <path d="M648 312L732 348M646 316.6L730 352.6M650 307.4L734 343.4M646 316.6L650 307.4M730 352.6L734 343.4"/>
+              <path d="M150 517H222M208 523H280M150 515V525M280 515V525"/>
             </g>
+            <!-- doors -->
+            <g stroke-width="1">
+              <path d="M300 290H262M300 456H264M220 356H254M482 540V484"/>
+              <path d="M262 290A38 38 0 0 1 300 252M264 456A36 36 0 0 1 300 420M254 356A34 34 0 0 0 220 322M482 484A56 56 0 0 1 538 540" stroke-width="0.6" stroke-dasharray="3 2"/>
+              <path d="M300 334V372" stroke-width="0.6" stroke-dasharray="6 3"/>
+            </g>
+            <!-- stair -->
+            <rect x="312" y="132" width="136" height="96" stroke-width="1"/>
+            <path d="M325 132V228M338 132V228M351 132V228M364 132V228M377 132V228M390 132V228M403 132V228M416 132V228M429 132V228" stroke-width="0.7"/>
+            <path d="M318 180H436M436 180l-9 -5v10z" stroke-width="0.9"/>
+            <path d="M395 132L372 228" stroke-width="0.9" stroke-dasharray="7 3"/>
+            <!-- kitchen: benches, sink, cooktop, island -->
+            <path d="M466 108H592V250H614" stroke-width="1"/>
+            <rect x="500" y="89" width="38" height="15" rx="3" stroke-width="0.9"/><circle cx="519" cy="96.5" r="2" stroke-width="0.8"/>
+            <g stroke-width="0.9"><circle cx="603" cy="132" r="5.5"/><circle cx="603" cy="150" r="5.5"/><circle cx="603" cy="172" r="5.5"/><circle cx="603" cy="190" r="5.5"/></g>
+            <rect x="590" y="212" width="26" height="36" stroke-width="0.9"/><path d="M590 212L616 248" stroke-width="0.6"/>
+            <rect x="494" y="148" width="74" height="38" fill="url(#hatch2)" stroke="var(--sc-accent)" stroke-width="1.4"/>
+            <g stroke-width="0.9"><circle cx="508" cy="200" r="6"/><circle cx="531" cy="200" r="6"/><circle cx="554" cy="200" r="6"/></g>
+            <!-- dining -->
+            <rect x="342" y="300" width="110" height="50" rx="2"/>
+            <g stroke-width="0.9"><rect x="352" y="286" width="16" height="10" rx="2"/><rect x="389" y="286" width="16" height="10" rx="2"/><rect x="426" y="286" width="16" height="10" rx="2"/><rect x="352" y="354" width="16" height="10" rx="2"/><rect x="389" y="354" width="16" height="10" rx="2"/><rect x="426" y="354" width="16" height="10" rx="2"/><rect x="326" y="317" width="10" height="16" rx="2"/><rect x="458" y="317" width="10" height="16" rx="2"/></g>
+            <!-- living -->
+            <rect x="372" y="398" width="116" height="78" stroke-width="0.7" stroke-dasharray="4 3"/>
+            <path d="M346 404V500H500V476H372V404Z"/><path d="M354 404V492H500" stroke-width="0.7"/>
+            <rect x="398" y="420" width="70" height="36" rx="4" stroke-width="1"/>
+            <path d="M560 400V480" stroke-width="2.4"/><path d="M548 410V470" stroke-width="0.7" stroke-dasharray="3 3"/>
+            <!-- lounge wing -->
+            <circle cx="690" cy="450" r="22"/><g stroke-width="0.9"><circle cx="690" cy="418" r="8"/><circle cx="690" cy="482" r="8"/><circle cx="658" cy="450" r="8"/><circle cx="722" cy="450" r="8"/></g>
+            <circle cx="736" cy="388" r="11" stroke-width="0.9"/><path d="M736 377V399M725 388H747M729 381L743 395M743 381L729 395" stroke-width="0.6"/>
+            <!-- bed 1 -->
+            <rect x="140" y="140" width="110" height="122" rx="2"/>
+            <g stroke-width="0.9"><rect x="148" y="147" width="44" height="20" rx="5"/><rect x="198" y="147" width="44" height="20" rx="5"/><path d="M140 186H250"/><path d="M140 218L172 262" stroke-dasharray="3 3"/><rect x="254" y="140" width="18" height="18"/><circle cx="263" cy="149" r="4"/></g>
+            <!-- bed 2 -->
+            <rect x="138" y="418" width="78" height="90" rx="2"/>
+            <g stroke-width="0.9"><rect x="145" y="424" width="64" height="18" rx="5"/><path d="M138 458H216"/><rect x="238" y="478" width="52" height="30"/><circle cx="262" cy="470" r="7"/></g>
+            <!-- bath + laundry -->
+            <rect x="127" y="307" width="44" height="86" rx="10"/><rect x="133" y="313" width="32" height="74" rx="8" stroke-width="0.7"/><circle cx="149" cy="380" r="2.5" stroke-width="0.8"/>
+            <g stroke-width="0.9"><rect x="190" y="308" width="22" height="9" rx="2"/><ellipse cx="201" cy="330" rx="9" ry="12"/><ellipse cx="200" cy="382" rx="11" ry="8"/></g>
+            <g stroke-width="0.9"><rect x="228" y="378" width="30" height="16"/><rect x="262" y="378" width="30" height="16"/><circle cx="243" cy="386" r="5"/><circle cx="277" cy="386" r="5"/></g>
+          </g>
+          <!-- front plane: dimensions, labels, section cut, callout, north point, title -->
+          <g data-sc-parallax="0.3" stroke="var(--line)" stroke-width="1.4">
+            <path d="M120 34H760M120 14H760"/>
+            <path d="M115 39L125 29M295 39L305 29M455 39L465 29M615 39L625 29M755 39L765 29M115 19L125 9M755 19L765 9" stroke-width="1.4"/>
+            <path d="M74 120V520M54 120V520"/>
+            <path d="M69 125L79 115M69 305L79 295M69 405L79 395M69 525L79 515M49 125L59 115M49 525L59 515" stroke-width="1.4"/>
+            <!-- section A-A -->
+            <path d="M540 -40V650" stroke="var(--sc-accent)" stroke-width="1.1" stroke-dasharray="22 5 3 5"/>
+            <g stroke="var(--sc-accent)" stroke-width="1.2"><circle cx="540" cy="-52" r="13" fill="var(--sc-canvas)"/><circle cx="540" cy="662" r="13" fill="var(--sc-canvas)"/><path d="M526 -52l-12 0M526 662l-12 0"/></g>
+            <path d="M510 -52l10 -6v12zM510 662l10 -6v12z" fill="var(--sc-accent)" stroke="none"/>
+            <!-- island callout -->
+            <circle cx="531" cy="167" r="50" stroke="var(--sc-accent)" stroke-width="1.1" stroke-dasharray="6 4"/>
+            <path d="M568 134L660 66H830" stroke="var(--sc-accent)" stroke-width="1"/>
+            <!-- level datum -->
+            <path d="M560 300l-8 -12h16z" fill="var(--line)" stroke="none"/><path d="M544 300H600" stroke-width="0.8"/>
+            <!-- north point -->
+            <g transform="translate(830 150)"><circle r="20"/><path d="M0 -30L8 8L0 3L-8 8Z" fill="var(--line)"/></g>
+            <!-- title -->
+            <path d="M600 682H820" stroke-width="1.6"/><path d="M600 687H820" stroke-width="0.6"/>
+            <g fill="var(--line)" stroke="none" font-size="13" text-anchor="middle">
+              <text x="210" y="29">3600</text><text x="380" y="29">3200</text><text x="540" y="29" fill="var(--line)">3200</text><text x="690" y="29">2800</text><text x="440" y="9">12800</text>
+              <text x="68" y="214" transform="rotate(-90 68 214)">3600</text><text x="68" y="354" transform="rotate(-90 68 354)">2000</text><text x="68" y="464" transform="rotate(-90 68 464)">2400</text><text x="48" y="324" transform="rotate(-90 48 324)">8000</text>
+              <text x="540" y="-47" fill="var(--sc-accent)">A</text><text x="540" y="667" fill="var(--sc-accent)">A</text>
+              <text x="830" y="196" font-size="12">N</text>
+            </g>
+            <g fill="var(--line)" stroke="none" font-size="12" text-anchor="middle">
+              <text x="196" y="282">BED 1</text><text x="260" y="350" font-size="9">LDRY</text><text x="176" y="408" font-size="9">BATH</text><text x="252" y="436">BED 2</text>
+              <text x="380" y="250" font-size="10">UP</text><text x="420" y="390">DINING</text><text x="440" y="515">LIVING</text><text x="690" y="525">LOUNGE</text><text x="280" y="588">TERRACE</text><text x="715" y="640" font-size="10">POOL</text>
+              <text x="548" y="236">KITCHEN</text>
+            </g>
+            <g fill="var(--line)" fill-opacity="0.7" stroke="none" font-size="9" text-anchor="middle"><text x="196" y="294">19.8 m²</text><text x="420" y="402">FFL ±0.000</text><text x="440" y="527">32.4 m²</text><text x="690" y="537">17.6 m²</text><text x="548" y="248">14.2 m²</text></g>
+            <g fill="var(--sc-accent)" stroke="none" font-size="12"><text x="664" y="60">STONE ISLAND</text><text x="664" y="80" font-size="10">SEE SD-201</text></g>
+            <g fill="var(--line)" stroke="none"><text x="600" y="674" font-size="14">GROUND FLOOR PLAN</text><text x="820" y="674" font-size="11" text-anchor="end">1:100</text></g>
           </g>
         </svg>
-      </div>
+      </div></div>
     </div>
     <div class="sc-wrap">
       <div class="title-copy sc-stack" data-sc-in data-sc-stagger="70">
@@ -452,28 +523,28 @@
       </div>
       <ol class="scope__list" data-sc-in data-sc-stagger="80">
         <li class="scope__item">
-          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M24 108V18H92V108"/><path d="M24 36H92M24 54H92M24 72H92M24 90H92M46 18V36M70 18V36M35 36V54M58 36V54M81 36V54M46 54V72M70 54V72M35 72V90M58 72V90M81 72V90" stroke-width="0.7"/><path d="M44 108V94H72V108M58 94V108" fill="var(--sc-canvas)"/><path d="M36 93H80" stroke-width="2.2"/><path d="M10 108H106" stroke="var(--line-soft)"/><circle cx="81" cy="45" r="7" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M87 41L106 31" stroke="var(--sc-accent)" stroke-width="1.2"/><circle cx="126" cy="38" r="22" fill="var(--sc-canvas)"/><path d="M108 24H119V52H108" fill="url(#hatch2)" stroke-width="0.9"/><path d="M119 32H132V45" stroke-width="1.6"/><path d="M112 36H126" stroke-width="0.9"/><path d="M137 19V57" stroke-width="2.6"/><path d="M132 45H137" stroke-width="0.9"/></svg>
+          <svg class="ico" viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 62H46V108H24Z" fill="var(--line)"/><path d="M46 30L98 20V108H46Z" fill="var(--line)"/><path d="M98 20L132 30V108H98Z" fill="var(--line)"/><g fill="var(--sc-canvas)" stroke="none"><rect x="29" y="70" width="5" height="30"/><rect x="37" y="70" width="5" height="30"/><path d="M53 42l6 -1v50h-6zM65 40l6 -1v52h-6zM77 37l6 -1v55h-6zM89 35l5 -1v57h-5z"/><rect x="47" y="57" width="50" height="3"/><path d="M97 20.5h2V108h-2z"/><g><rect x="104" y="36" width="7" height="7"/><rect x="119" y="38" width="7" height="7"/><rect x="104" y="50" width="7" height="7"/><rect x="119" y="51" width="7" height="7"/><rect x="104" y="64" width="7" height="7"/><rect x="119" y="64" width="7" height="7"/><rect x="104" y="78" width="7" height="7"/><rect x="119" y="78" width="7" height="7"/></g></g><path d="M62 108V96H82V108" fill="var(--sc-accent)" stroke="var(--sc-accent)" stroke-width="2"/><path d="M56 93H88" stroke="var(--sc-accent)" stroke-width="3.5"/><rect x="104" y="92" width="22" height="16" fill="var(--sc-canvas)" stroke="none"/><path d="M115 92V108" stroke-width="2.5"/><path d="M12 109H146"/></svg>
           <div>
             <h3 data-vi="Mặt dựng và sảnh">Facades and lobbies</h3>
             <p data-vi="Mặt bằng, mặt cắt, mặt đứng và chi tiết liên kết cho tấm ốp mặt dựng và hoàn thiện tường, sàn sảnh, hành lang, phối hợp với kết cấu do đơn vị khác thiết kế.">Plans, sections, elevations and support/fixing details for external cladding and lobby and corridor finishes, coordinated with the structure designed by others.</p>
           </div>
         </li>
         <li class="scope__item">
-          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M16 52L52 36H140L108 52Z" fill="var(--sc-canvas)"/><path d="M16 52V60H108V52M108 60L140 44V36"/><path d="M24 60V104H100V60M100 104L132 90V48"/><path d="M49 60V104M75 60V104" stroke-width="0.7"/><path d="M44 82h2M70 82h2M95 82h2" stroke-width="1.6"/><path d="M60 52L92 36" stroke-width="0.8" stroke-dasharray="2 2"/><ellipse cx="82" cy="44" rx="7" ry="2.6" stroke-width="0.9"/><ellipse cx="102" cy="44" rx="7" ry="2.6" stroke-width="0.9"/><path d="M8 104H146" stroke="var(--line-soft)"/><circle cx="108" cy="55" r="6" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M112 50L126 26" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M126 8H152V16L146 22H126" fill="url(#hatch2)" stroke-width="1.1"/></svg>
+          <svg class="ico" viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M26 8V24L14 42H50L38 24V8"/><path d="M62 8H118M80 8V22M104 8V28"/><path d="M70 34Q70 22 80 22Q90 22 90 34ZM94 40Q94 28 104 28Q114 28 114 40Z"/><g fill="var(--sc-accent)" stroke="none"><circle cx="80" cy="39" r="3"/><circle cx="104" cy="45" r="3"/></g><path d="M22 70q-4 -4 0 -8t0 -8M32 70q-4 -4 0 -8t0 -8M42 70q-4 -4 0 -8t0 -8" stroke-width="3"/><path d="M8 76H112" stroke="var(--sc-accent)" stroke-width="5.5"/><path d="M12 80H108V106H12Z"/><path d="M44 80V106M76 80V106M76 93H108M24 86V90M56 86V90M88 87H96M88 99H96" stroke-width="3.5"/><path d="M68 76V60Q68 54 74 54H78Q84 54 84 60V64"/><path d="M118 40H144V106H118ZM118 62H144M124 48V56M124 68V80"/><path d="M4 110H152"/></svg>
           <div>
             <h3 data-vi="Bếp, lavabo, quầy bar">Kitchens, vanities, bars</h3>
             <p data-vi="Đảo bếp, mặt bàn, lavabo, lò sưởi và quầy bar với chi tiết cạnh đá, phối hợp với đồ gỗ và hệ thống kỹ thuật.">Kitchen islands, benchtops, vanities, fireplaces and bar counters with edge-profile details, coordinated with joinery and services.</p>
           </div>
         </li>
         <li class="scope__item">
-          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M32 14H118V76H32Z"/><path d="M32 30H118M32 46H118M32 62H118M53 14V76M75 14V76M96 14V76" stroke-width="0.7"/><path d="M32 76L12 108H138L118 76"/><path d="M24 89H127M18 98H132M53 76L46 108M75 76V108M96 76L104 108" stroke-width="0.7"/><path d="M106 14V22H98" stroke-width="1.4"/><path d="M92 22H104" stroke-width="2.4"/><path d="M94 28V40M98 30V46M102 28V38" stroke="var(--sc-accent)" stroke-width="1.1" stroke-dasharray="3 3"/><ellipse cx="75" cy="97" rx="8" ry="2.8" stroke="var(--sc-accent)" stroke-width="1.2" fill="var(--sc-canvas)"/><path d="M40 103L62 99M58 96.5l4.5 2.5-3.5 3.5M112 103L89 99M93 96.5l-4.5 2.5 3.5 3.5" stroke="var(--sc-accent)" stroke-width="1.1"/><path d="M140 14V76M137 14H143M137 76H143" stroke-width="0.8" stroke="var(--line-soft)"/></svg>
+          <svg class="ico" viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 62H90"/><path d="M12 62V76Q12 92 28 92H70Q86 92 86 76V62"/><path d="M24 92L20 104M74 92L78 104"/><path d="M20 62V28Q20 14 34 14H42Q52 14 52 24V28"/><path d="M42 28H62L56 36H48Z" fill="var(--line)"/><g stroke="var(--sc-accent)" stroke-width="3"><path d="M47 43L45 49M53 43V49M59 43L61 49M45 54L43 59M53 54V59M61 54L63 59"/></g><path d="M110 10H140V48H110Z"/><path d="M98 62H150"/><path d="M102 62Q102 80 124 80Q146 80 146 62"/><path d="M116 80V104H132V80"/><path d="M124 62V52Q124 48 129 48H134M128 44V48"/><path d="M4 108H154"/></svg>
           <div>
             <h3 data-vi="Khu vực ướt">Wet areas</h3>
             <p data-vi="Bố trí đá và gạch cho tường, sàn, định vị mạch và chi tiết cạnh cho phòng tắm, phối hợp với lớp chống thấm.">Wall and floor stone and tile layouts, joint set-outs and edge details for bathrooms, coordinated with waterproofing.</p>
           </div>
         </li>
         <li class="scope__item">
-          <svg viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="1.3" aria-hidden="true"><rect x="34" y="14" width="70" height="90"/><rect x="48" y="24" width="70" height="90" fill="var(--sc-canvas)"/><path d="M58 44h50M58 56h50M58 68h32"/><path d="M84 66c6 -8 18 -6 20 2s-6 12 -14 10s-12 -6 -6 -12" stroke="var(--sc-accent)" stroke-width="1.2"/><path d="M72 98l8 8 18-20" stroke="var(--sc-accent)" stroke-width="2"/><path d="M118 92h20M118 100h20M118 108h14" stroke="var(--line-soft)"/></svg>
+          <svg class="ico" viewBox="0 0 160 120" fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M28 32H128V92H28Z"/><path d="M68 92L64 106H92L88 92M54 106H102"/><path d="M38 8H70L82 20V74H38Z" fill="var(--sc-canvas)"/><path d="M70 8V20H82M46 30H74M46 38H74M46 46H64M46 54H58V62H46Z" stroke-width="3"/><circle cx="58" cy="78" r="13" fill="var(--sc-canvas)"/><path d="M48 87L34 101" stroke-width="6"/><path d="M106 22L124 12M130 18L138 38" stroke-width="3"/><circle cx="102" cy="25" r="6" fill="var(--sc-canvas)"/><circle cx="128" cy="11" r="6" fill="var(--sc-accent)" stroke="var(--sc-accent)"/><circle cx="140" cy="44" r="6" fill="var(--sc-canvas)"/><path d="M116 66H142V92H116Z" fill="var(--sc-canvas)"/><path d="M110 60H136V86H110Z" fill="var(--sc-canvas)"/><path d="M116 68H130M116 74H130M116 80H124" stroke-width="3"/></svg>
           <div>
             <h3 data-vi="Phối hợp và hồ sơ">Coordination and records</h3>
             <p data-vi="Nộp bản vẽ, phiếu chuyển và RFI qua Oracle Aconex, cập nhật theo góp ý của kiến trúc sư và nhà thầu chính, đề xuất phương án mạch và chia tấm, lập bản vẽ hoàn công, danh sách cắt và khối lượng.">Submissions, transmittals and RFIs through Oracle Aconex, revisions from architects and head contractors, alternative joint and panel layouts, as-builts, cutting lists and quantities.</p>
@@ -573,9 +644,10 @@
       </div>
       <div>
         <div class="bore">
-          <div class="layer" data-sc-reveal="right" data-sc-reveal-at="0.05 0.2">
+          <div class="bore__head" aria-hidden="true"><span>BH-01</span><span data-vi="Thời gian">Period</span><span data-vi="Địa tầng · mô tả">Stratum · description</span></div>
+          <div class="layer is-now" data-sc-reveal="right" data-sc-reveal-at="0.05 0.2">
             <div class="layer__core h-cross"></div>
-            <div class="layer__when" data-vi="09/2024 đến nay">09/2024 to now</div>
+            <div class="layer__when"><span data-vi="09/2024 đến nay">09/2024 to now</span><em class="now" data-vi="Hiện tại">Current</em></div>
             <div class="layer__what">
               <h3 data-vi="Họa viên kiến trúc">Architectural Draftsperson</h3>
               <p class="org">Saba Bros Tiling Pty Ltd, Sydney</p>
@@ -618,6 +690,7 @@
               <p data-vi="Luận văn: thiết kế đường miền núi và cầu bê tông cốt thép.">Thesis: mountainous road design and reinforced concrete bridge design.</p>
             </div>
           </div>
+          <div class="bore__foot" aria-hidden="true"><span data-vi="Kết thúc lỗ khoan · 2010">End of borehole · 2010</span><span data-vi="5 tầng">5 strata</span></div>
         </div>
 
         <p class="label skills-head" data-vi="Phần mềm">Software</p>
@@ -650,7 +723,7 @@
       </div>
       <div class="tb" data-sc-in>
         <div><small data-vi="Vẽ bởi">Drawn</small><span>Minh Nhut Nguyen</span></div>
-        <div><small data-vi="Chức danh">Role</small><span data-vi="Họa viên kiến trúc (ANZSCO 312111)">Architectural Draftsperson (ANZSCO 312111)</span></div>
+        <div><small data-vi="Chức danh">Role</small><span data-vi="Họa viên kiến trúc">Architectural Draftsperson</span></div>
         <div><small data-vi="Nơi làm">Based</small><span>Sydney, NSW</span></div>
         <div><small>Email</small><a href="mailto:minhnhut2727@gmail.com">minhnhut2727@gmail.com</a></div>
         <div><small data-vi="Trạng thái">Status</small><span class="ok" data-vi="ĐÃ DUYỆT">APPROVED</span></div>
