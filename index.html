@@ -1349,26 +1349,25 @@
 })();
 </script>
 <script>
-/* A-301: each sketch draws itself in as its card slides onto the screen */
+/* A-301: each card draws by where it actually is on screen (the rail's real transform), read every
+   animation frame while the section is visible, so throttled scroll events in in-app browsers
+   (Messenger, Facebook, Instagram) cannot make it lag. Nothing draws until the pan has started. */
 (function () {
   var cards = Array.prototype.slice.call(document.querySelectorAll('.proj'));
-  if (!cards.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var sec = document.getElementById('a301'), on = false, raf = 0;
-  function tick() {
+  var sec = document.getElementById('a301');
+  if (!cards.length || !sec || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var on = false, raf = 0;
+  function frame() {
     raf = 0;
-    // progress through the pinned pan: 0 as it pins, 1 as it releases. Card i draws in its own slice.
-    var sr = sec.getBoundingClientRect(), run = sr.height - innerHeight;
-    var p = run > 0 ? -sr.top / run : 1, n = cards.length;
-    cards.forEach(function (c, i) {
-      var f = (p * (n + 0.6) - i) / 1.1;
-      c.style.setProperty('--draw', Math.max(0, Math.min(1, f)).toFixed(3));
+    var w = innerWidth, p = parseFloat(sec.style.getPropertyValue('--sc-p')) || 0, gate = Math.min(1, p * 8);
+    cards.forEach(function (c) {
+      var f = (w * 0.95 - c.getBoundingClientRect().left) / (w * 0.55);
+      c.style.setProperty('--draw', (Math.max(0, Math.min(1, f)) * gate).toFixed(3));
     });
+    if (on) raf = requestAnimationFrame(frame);
   }
-  function req() { if (!raf) raf = requestAnimationFrame(tick); }
-  new IntersectionObserver(function (e) { on = e[0].isIntersecting; if (on) req(); }).observe(sec);
-  addEventListener('scroll', function () { if (on) req(); }, { passive: true });
-  addEventListener('resize', req);
-  tick();
+  new IntersectionObserver(function (e) { on = e[0].isIntersecting; if (on && !raf) raf = requestAnimationFrame(frame); }).observe(sec);
+  frame();
 })();
 /* A-000: the island callout types itself, holds, clears, types again */
 (function () {
