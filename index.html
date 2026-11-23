@@ -408,6 +408,26 @@
     .bore::before, .bore::after { width: 14px; height: 14px; }
   }
 
+  @media (max-width: 860px) {
+    /* Projects on phones: a native horizontal swipe with snap. The browser scrolls it, so it stays smooth. */
+    .register.is-swipe { padding-block: calc(var(--u, 24px) * 3) calc(var(--u, 24px) * 4); }
+    .register.is-swipe .sc-stage, .register.is-swipe [data-sc-stage] {
+      position: relative; top: auto; height: auto; display: block;
+      overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .register.is-swipe [data-sc-stage]::-webkit-scrollbar { display: none; }
+    .register.is-swipe .rail { transform: none !important; gap: 1rem; padding-inline: 1.25rem; }
+    .register.is-swipe .rail > * { scroll-snap-align: start; }
+    .register.is-swipe .rail__lead { width: auto; padding: 0 1.25rem 1.5rem; }
+    .register.is-swipe .rail__end { width: 70vw; }
+    .swipe-hint { display: flex; justify-content: space-between; gap: 1rem; margin: 1.25rem 1.25rem 0; font-family: var(--sc-font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sc-ink-soft); }
+    .swipe-count { color: var(--sc-ink); }
+    /* lighter paint while things move */
+    .proj { box-shadow: none; }
+    .sc-grain { display: none; }
+    .proj__art svg { transform: none !important; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .peak, .peak * { --sc-p: 1 !important; }
     .folio__stamp { transition: none; }
@@ -1252,6 +1272,27 @@
   matchMedia('(max-width: 860px)').addEventListener('change', buildSheet);
 
   // ===== engine =====
+  // ===== phones: Projects becomes a native swipe rail (no scroll-pinning, so iOS momentum stays smooth) =====
+  if (matchMedia('(max-width: 860px)').matches) {
+    var reg = document.getElementById('a301'), stageEl = reg.querySelector('[data-sc-stage]'), railEl = reg.querySelector('[data-sc-pan]');
+    reg.setAttribute('data-sc-act', 'flow'); reg.removeAttribute('data-sc-span'); reg.classList.add('is-swipe');
+    railEl.removeAttribute('data-sc-pan');
+    var leadEl = railEl.querySelector('.rail__lead'); if (leadEl) stageEl.parentNode.insertBefore(leadEl, stageEl);
+    var hint = document.createElement('p'); hint.className = 'swipe-hint';
+    hint.innerHTML = '<span class="swipe-count">01 / 06</span><span data-vi="Vuốt để xem thêm →">Swipe for more →</span>';
+    stageEl.parentNode.insertBefore(hint, stageEl.nextSibling);
+    var projs = Array.prototype.slice.call(railEl.querySelectorAll('.proj')), countEl = hint.firstChild, ticking = false;
+    stageEl.addEventListener('scroll', function () {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var mid = stageEl.scrollLeft + stageEl.clientWidth / 2, best = 0, bd = 1e9;
+        projs.forEach(function (c, i) { var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
+        countEl.textContent = String(best + 1).padStart(2, '0') + ' / ' + String(projs.length).padStart(2, '0');
+      });
+    }, { passive: true });
+  }
+
   ScrollCraft.mount(document.body);
 
   // ===== folio: the sheet index =====
